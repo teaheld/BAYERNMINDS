@@ -5,7 +5,7 @@ body {
 .window {
 	background: linear-gradient(to right,#dc052c,#bf2531);
 	width: 85%;
-	height: 93vh;
+	height: 94vh;
 	margin: 3vh auto;
 	border-radius: 5%;
 	overflow: hidden;
@@ -50,7 +50,7 @@ body {
 }
 
 .game {
-	width: 70%;
+	width: 72.5%;
 	background-color: #0369a0;	
 	border-radius: 5%;
 	display: flex;
@@ -61,12 +61,13 @@ body {
 table {
 	margin-right: 10px;
 	margin-left: 10px;
+	align-items: bottom;
 }
 
 .table_img {
 	width: 63.5px;
 	height: 63.5px;
-	border-radius: 50%;
+	display: block;
 }
 
 #buttons {
@@ -78,10 +79,15 @@ table {
 
 button {
 	background-color: #a01439;
-	width: 63.5px;
+	width: 63px;
 	height: 40px;
 	border-radius: 5px;
 	border: none;
 	color: white;
 	margin-bottom: 20px;
+}
+
+td {
+	background-color: #dc052c;
+	border-radius: 3px;
 }
