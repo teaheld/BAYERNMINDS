@@ -1,7 +1,26 @@
+var sources = [ "../images/manu.webp", 
+						"../images/lewi.webp", 
+						"../images/tomi.webp", 
+						"../images/kimich.webp", 
+						"../images/thiago.webp",
+						"../images/phil.webp"   ];
+
 class Game {
 	constructor() {
-		this.max_number_of_trials = 6;
-		this.current_try = 0;
+		this._max_number_of_trials = 6;
+		this._current_try = 0;
+		this._solution = [ sources[Math.floor(Math.random() * 6)], 				  								
+											 sources[Math.floor(Math.random() * 6)], 	 			
+											 sources[Math.floor(Math.random() * 6)], 
+											 sources[Math.floor(Math.random() * 6)] ];   
+	}
+	
+	get solution() {
+		return this._solution;
+	}
+	
+	get current_try() {
+		return this._current_try;
 	}
 	
 	write_trials() {
@@ -9,8 +28,9 @@ class Game {
 	}
 	
 	remove_trial() {
-		this.current_try++;
+		this._current_try++;
 	}
+	
 }
 
 var g;
@@ -23,6 +43,21 @@ function newGame() {
 
 function Try() {
 	g.remove_trial();
+	
+	/*
+	var i;
+	var res = false;
+	for(i = 1; i < 5; i++) {
+		if(check_src_equality(i) == true) {
+			res = true;
+			break;
+		}
+	}*/
+	
+	//document.getElementById("pisi").innerHTML = res;
+	/*if([1, 2, 3, 4].every(check_src_equality) == false) {
+		document.getElementById("pisi").innerHTML = "MOze!";
+	} else { document.getElementById("pisi").innerHTML = "NEMOze!"; }*/
 }
 
 function addManu() {
@@ -49,16 +84,27 @@ function addPhil() {
 	add("../images/phil.webp");
 }
 
+function check_src_equality(i, src = "logo.webp") {
+	curr_try = g.current_try;
+	
+	img_i = "img_" + i.toString();
+	curr_src = document.getElementsByClassName(img_i)[curr_try].src.split("/").pop();
+		
+	if(curr_src === src) {
+		return true;
+	} else { return false; }
+}
+
 function add(src) {
 	curr_try = g.current_try;
 	
+	var i;
 	for(i = 1; i < 5; i++) {
-		img_i = "img_" + i.toString();
-		curr_src = document.getElementsByClassName(img_i)[curr_try].src.split("/").pop();
-		
-		if(curr_src === "logo.webp") {
+		if(check_src_equality(i) == true) {
 			document.getElementsByClassName(img_i)[curr_try].src = src;
 			break;
 		}
 	}
 }
+
+
