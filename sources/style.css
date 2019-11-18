@@ -47,6 +47,7 @@ body {
 
 .nav {
 	width: 25%;
+	height: 15%;
 }
 
 .game {
@@ -90,4 +91,8 @@ button {
 td {
 	background-color: #dc052c;
 	border-radius: 3px;
+}
+
+#tryButton {
+	visibility: hidden;
 }
