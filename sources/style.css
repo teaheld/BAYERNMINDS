@@ -4,7 +4,7 @@ body {
 
 .window {
 	background: linear-gradient(to right,#dc052c,#bf2531);
-	width: 85%;
+	width: 95%;
 	height: 94vh;
 	margin: 3vh auto;
 	border-radius: 5%;
@@ -35,6 +35,7 @@ body {
 	margin-right: 10%;
 }
 
+
 .blank {
 	height: 8%;
 	width: 100%;
@@ -43,20 +44,23 @@ body {
 .central {
 	display: flex;
 	height: 75%;
+	justify-content: center;
+	align-items: center;
 }
 
-.nav {
+/*.nav {
 	width: 25%;
 	height: 15%;
-}
+}*/
 
 .game {
-	width: 72.5%;
+	width: 90%;
 	background-color: #0369a0;	
 	border-radius: 5%;
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	height: 100%;
 }
 
 table {
@@ -96,3 +100,12 @@ td {
 #tryButton {
 	visibility: hidden;
 }
+
+.help {
+	color: white;
+}
+
+#table_4 {
+	padding-left: 20px;
+}
+
