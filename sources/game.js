@@ -84,11 +84,12 @@ function addPhil() {
 	add("../images/phil.webp");
 }
 
+
 function check_src_equality(i, src = "logo.webp") {
 	curr_try = g.current_try;
 	
-	img_i = "img_" + i.toString();
-	curr_src = document.getElementsByClassName(img_i)[curr_try].src.split("/").pop();
+	img_i = "try_" + curr_try.toString();
+	curr_src = document.getElementsByClassName(img_i)[i].src.split("/").pop();
 		
 	if(curr_src === src) {
 		return true;
@@ -99,12 +100,11 @@ function add(src) {
 	curr_try = g.current_try;
 	
 	var i;
-	for(i = 1; i < 5; i++) {
+	img_i = "try_" + curr_try.toString();
+	for(i = 0; i < 4; i++) {
 		if(check_src_equality(i) == true) {
-			document.getElementsByClassName(img_i)[curr_try].src = src;
+			document.getElementsByClassName(img_i)[i].src = src;
 			break;
 		}
 	}
 }
-
-
