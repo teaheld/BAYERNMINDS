@@ -1,18 +1,43 @@
 var sources = [ "../images/manu.webp", 
-						"../images/lewi.webp", 
-						"../images/tomi.webp", 
-						"../images/kimich.webp", 
-						"../images/thiago.webp",
-						"../images/phil.webp"   ];
+								"../images/lewi.webp", 
+								"../images/tomi.webp", 
+								"../images/kimich.webp", 
+								"../images/thiago.webp",
+								"../images/phil.webp"   ];
+
+class Field {
+	constructor(id, src = "../images/logo.webp") {
+		this._id = id;
+		this._src = src;
+	}
+	
+	get id() {
+		return this._id;
+	}
+	
+	get src() {
+		return this._src;
+	}
+	
+	set src(src) {
+		this._src = src;
+	}
+}
 
 class Game {
-	constructor() {
-		this._max_number_of_trials = 6;
+	constructor(max_tries) {
+		this._solution = [  new Field(0, sources[Math.floor(Math.random() * 6)]),
+												new Field(1, sources[Math.floor(Math.random() * 6)]),
+												new Field(2, sources[Math.floor(Math.random() * 6)]),
+												new Field(3, sources[Math.floor(Math.random() * 6)]) ];
+												
 		this._current_try = 0;
-		this._solution = [ sources[Math.floor(Math.random() * 6)], 				  								
-											 sources[Math.floor(Math.random() * 6)], 	 			
-											 sources[Math.floor(Math.random() * 6)], 
-											 sources[Math.floor(Math.random() * 6)] ];   
+		this._current_solution = [ new Field(0),
+															 new Field(1),
+															 new Field(2),
+															 new Field(3) ];
+															 
+		this._max_tries = max_tries;
 	}
 	
 	get solution() {
@@ -23,88 +48,69 @@ class Game {
 		return this._current_try;
 	}
 	
-	write_trials() {
-		return this.current_try;
+	get current_solution() {
+		return this._current_solution;
 	}
 	
-	remove_trial() {
+	get max_tries() {
+		return this._max_tries;
+	}
+	
+	remove_try() {
 		this._current_try++;
 	}
-	
 }
 
-var g;
+var game;
 
 function newGame() {
-	g = new Game();
+	game = new Game(6);
 	
-	document.getElementById("tryButton").style.visibility = "visible"; 
+	cleanUpScene();
+	document.getElementById("tryButton").style.visibility = "visible";
 }
 
 function Try() {
-	g.remove_trial();
+	if(game.current_solution.some(
+													function (sol)
+													{ return sol.src === "../images/logo.webp"}) 
+													=== true) {
+		alert("Fields must not be empty!");
+		return;
+	}
+
+	game.remove_try();
+	if(game.current_try === game.max_tries) {
+		document.getElementById("tryButton").style.visibility = "hidden";
+		return;
+	}
 	
-	/*
-	var i;
-	var res = false;
-	for(i = 1; i < 5; i++) {
-		if(check_src_equality(i) == true) {
-			res = true;
-			break;
-		}
-	}*/
+	game.current_solution.map(function (sol) 
+											{ sol.src =  "../images/logo.webp"; });
+}
+
+function add_player(src_id) {
+	src = sources[src_id];
 	
-	//document.getElementById("pisi").innerHTML = res;
-	/*if([1, 2, 3, 4].every(check_src_equality) == false) {
-		document.getElementById("pisi").innerHTML = "MOze!";
-	} else { document.getElementById("pisi").innerHTML = "NEMOze!"; }*/
-}
-
-function addManu() {
-	add("../images/manu.webp");
-}
-
-function addLewi() {
-	add("../images/lewi.webp");
-}
-
-function addTomi() {
-	add("../images/tomi.webp");
-}
-
-function addKimich() {
-	add("../images/kimich.webp");
-}
-
-function addThiago() {
-	add("../images/thiago.webp");
-}
-
-function addPhil() {
-	add("../images/phil.webp");
-}
-
-
-function check_src_equality(i, src = "logo.webp") {
-	curr_try = g.current_try;
-	
-	img_i = "try_" + curr_try.toString();
-	curr_src = document.getElementsByClassName(img_i)[i].src.split("/").pop();
+	i = game.current_solution.findIndex(
+													function (sol) 
+													{ return sol.src === "../images/logo.webp"});
+																			
+	if(-1 === i) {
+		alert("Remove some player to put this one!");
+	}
 		
-	if(curr_src === src) {
-		return true;
-	} else { return false; }
+		
+	game.current_solution[i].src = src;
+	document.getElementsByClassName(
+					"try_" + game.current_try.toString())[i].src = src;
 }
 
-function add(src) {
-	curr_try = g.current_try;
-	
+function cleanUpScene() {
 	var i;
-	img_i = "try_" + curr_try.toString();
-	for(i = 0; i < 4; i++) {
-		if(check_src_equality(i) == true) {
-			document.getElementsByClassName(img_i)[i].src = src;
-			break;
-		}
+	for(i = 0; i < game.max_tries; i++) {
+		Array.from(document.getElementsByClassName("try_" + i.toString()))
+						.map(function (img) 
+								{ img.src = "../images/logo.webp"; });
 	}
 }
