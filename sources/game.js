@@ -61,12 +61,33 @@ class Game {
 	
 	remove_try() {
 		
-		var temp = this._current_solution.filter(function (curr_sol, i) 
-								{ return curr_sol.src ===  this[i].src; }, this._solution).length;
+		var total_guess = this._current_solution.filter(function (curr_sol, i) 
+										{ return curr_sol.src ===  this[i].src; }
+										, this._solution).length;
+								
+		//var temp2 = this._solution.map(function (sol)
+										
+		/* For each player calculate number of fields in the solution. */			
+		var num_sol = sources.map( function (src) 
+											{ return (this.filter( function (sol)
+												{ return sol.src === this }, src)).length}, this._solution);
+			
+		/* For each player calculate number of fields in the current solution. */									
+		var num_curr_sol = sources.map( function (src) 
+											{ return (this.filter( function (curr_sol)
+												{ return curr_sol.src === this }, src)).length}, this._current_solution);
 		
-		set_picture(temp);
+		/* Sum min(num_sol, num_curr_sol) for each i. */
+		var guesses = num_sol.map(function (sol, i) 
+										{ return Math.min(sol, this[i]); }, num_curr_sol)
+										.reduce(function(total, el) {return total + el; });	
+							
+		//document.getElementById("pisi").innerHTML = guesses;
+		set_picture(total_guess, guesses - total_guess);
 		
 		this._current_try++;
+		
+		return (total_guess === 4) ? 1 : 0; 
 	}
 }
 
@@ -89,13 +110,17 @@ function Try() {
 		return;
 	}
 
-	game.remove_try();
-	if(game.current_try === game.max_tries) {
+	var guessed = game.remove_try();
+	if(game.current_try === game.max_tries || 1 === guessed) {
 		Array.from(document.getElementsByClassName("solution"))
 						.map(function (img, i) 
 								{ img.src = game.solution[i].src; });
 		document.getElementById("tryButton").style.visibility = "hidden";
 		document.getElementById("removeButton").style.visibility = "hidden";
+		
+		if(1 === guessed) {
+			alert("Congratulations! You won!!!");
+		}
 		
 		return;
 	}
@@ -140,7 +165,13 @@ function Remove() {
 					"../images/logo.webp";
 }
 
-function set_picture(total_guess) {
+function set_picture(total_guess, player_guess) {
+/************************* OVO TREBA DORADITI ********************
+
+
+
+
+
 	Array.from(document.getElementsByClassName(
 							"res_" + game.current_try.toString()))
 							.forEach(function (img, i) 
@@ -148,10 +179,21 @@ function set_picture(total_guess) {
 									 	 	img.src = res_src[0];
 									 	 }
 									 }, total_guess);
-	/*var i;
+									 
+	Array.from(document.getElementsByClassName(
+							"res_" + game.current_try.toString()))
+							.forEach(function (img, i) 
+									 { if (i < this) {
+									 	 	img.src = res_src[1];
+									 	 }
+									 }, player_guess);*/
+	var i;
 	for(i = 0; i < total_guess; i++) {
 		document.getElementsByClassName("res_" + game.current_try.toString())[i].src = res_src[0];
-	}*/
+	}
+	for(i = total_guess; i < total_guess + player_guess; i++) {
+		document.getElementsByClassName("res_" + game.current_try.toString())[i].src = res_src[1];
+	}
 }
 
 function cleanUpScene() {
