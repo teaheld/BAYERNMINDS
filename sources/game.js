@@ -5,7 +5,7 @@ var sources = [ "../images/manu.webp",
 								"../images/thiago.webp",
 								"../images/phil.webp"   ];
 
-var src_guess = [ "../images/total_guess.png",
+var res_src = [ "../images/total_guess.png",
 									"../images/part_guess.png"  ];
 
 class Field {
@@ -39,7 +39,7 @@ class Game {
 															 new Field(1),
 															 new Field(2),
 															 new Field(3) ];
-															 
+		
 		this._max_tries = max_tries;
 	}
 	
@@ -60,6 +60,11 @@ class Game {
 	}
 	
 	remove_try() {
+		
+		var temp = this._current_solution.filter(function (curr_sol, i) 
+								{ return curr_sol.src ===  this[i].src; }, this._solution).length;
+		
+		set_picture(temp);
 		
 		this._current_try++;
 	}
@@ -95,7 +100,7 @@ function Try() {
 		return;
 	}
 	
-	game.current_solution.map(function (sol) 
+	game.current_solution.forEach(function (sol) 
 											{ sol.src =  "../images/logo.webp"; });
 }
 
@@ -135,15 +140,32 @@ function Remove() {
 					"../images/logo.webp";
 }
 
+function set_picture(total_guess) {
+	Array.from(document.getElementsByClassName(
+							"res_" + game.current_try.toString()))
+							.forEach(function (img, i) 
+									 { if (i < this) {
+									 	 	img.src = res_src[0];
+									 	 }
+									 }, total_guess);
+	/*var i;
+	for(i = 0; i < total_guess; i++) {
+		document.getElementsByClassName("res_" + game.current_try.toString())[i].src = res_src[0];
+	}*/
+}
+
 function cleanUpScene() {
 	var i;
 	for(i = 0; i < game.max_tries; i++) {
 		Array.from(document.getElementsByClassName("try_" + i.toString()))
-						.map(function (img) 
+						.forEach(function (img) 
+								{ img.src = "../images/logo.webp"; });
+	  Array.from(document.getElementsByClassName("res_" + i.toString()))
+						.forEach(function (img) 
 								{ img.src = "../images/logo.webp"; });
 	}
 	
 	Array.from(document.getElementsByClassName("solution"))
-						.map(function (img) 
+						.forEach(function (img) 
 								{ img.src = "../images/logo.webp"; });
 }
