@@ -110,11 +110,6 @@ function add_player(src_id) {
 					"try_" + game.current_try.toString())[i].src = src;
 }
 
-function remove_player() {
-	var x = element.className
-  document.getElementById("pisi").innerHTML = "Triggered by a " + x + " element";
-}
-
 function cleanUpScene() {
 	var i;
 	for(i = 0; i < game.max_tries; i++) {
@@ -122,4 +117,8 @@ function cleanUpScene() {
 						.map(function (img) 
 								{ img.src = "../images/logo.webp"; });
 	}
+	
+	Array.from(document.getElementsByClassName("solution"))
+						.map(function (img) 
+								{ img.src = "../images/logo.webp"; });
 }
