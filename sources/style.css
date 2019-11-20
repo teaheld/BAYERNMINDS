@@ -101,6 +101,10 @@ td {
 	visibility: hidden;
 }
 
+#removeButton {
+	visibility: hidden;
+}
+
 .help {
 	color: white;
 }

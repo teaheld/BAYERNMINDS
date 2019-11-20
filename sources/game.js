@@ -5,6 +5,9 @@ var sources = [ "../images/manu.webp",
 								"../images/thiago.webp",
 								"../images/phil.webp"   ];
 
+var src_guess = [ "../images/total_guess.png",
+									"../images/part_guess.png"  ];
+
 class Field {
 	constructor(id, src = "../images/logo.webp") {
 		this._id = id;
@@ -57,6 +60,7 @@ class Game {
 	}
 	
 	remove_try() {
+		
 		this._current_try++;
 	}
 }
@@ -68,6 +72,7 @@ function newGame() {
 	
 	cleanUpScene();
 	document.getElementById("tryButton").style.visibility = "visible";
+	document.getElementById("removeButton").style.visibility = "visible";
 }
 
 function Try() {
@@ -85,6 +90,7 @@ function Try() {
 						.map(function (img, i) 
 								{ img.src = game.solution[i].src; });
 		document.getElementById("tryButton").style.visibility = "hidden";
+		document.getElementById("removeButton").style.visibility = "hidden";
 		
 		return;
 	}
@@ -108,6 +114,25 @@ function add_player(src_id) {
 	game.current_solution[i].src = src;
 	document.getElementsByClassName(
 					"try_" + game.current_try.toString())[i].src = src;
+}
+
+function Remove() {
+	i = game.current_solution.findIndex(
+													function (sol) 
+													{ return sol.src === "../images/logo.webp"});
+	if(-1 === i) {
+		i = 3;
+	}
+	else if(0 == i) {
+		alert("You don't have any player on the field!");
+	} else {
+		i--;
+	}
+	
+	game.current_solution[i].src = "../images/logo.webp";
+	document.getElementsByClassName(
+					"try_" + game.current_try.toString())[i].src = 
+					"../images/logo.webp";
 }
 
 function cleanUpScene() {
