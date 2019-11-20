@@ -81,7 +81,11 @@ function Try() {
 
 	game.remove_try();
 	if(game.current_try === game.max_tries) {
+		Array.from(document.getElementsByClassName("solution"))
+						.map(function (img, i) 
+								{ img.src = game.solution[i].src; });
 		document.getElementById("tryButton").style.visibility = "hidden";
+		
 		return;
 	}
 	
@@ -104,6 +108,11 @@ function add_player(src_id) {
 	game.current_solution[i].src = src;
 	document.getElementsByClassName(
 					"try_" + game.current_try.toString())[i].src = src;
+}
+
+function remove_player() {
+	var x = element.className
+  document.getElementById("pisi").innerHTML = "Triggered by a " + x + " element";
 }
 
 function cleanUpScene() {
