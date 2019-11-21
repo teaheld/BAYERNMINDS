@@ -141,6 +141,7 @@ function add_player(src_id) {
 																			
 	if(-1 === i) {
 		alert("Remove some player to put this one!");
+		return;
 	}
 		
 	game.current_solution[i].src = src;
