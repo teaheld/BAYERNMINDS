@@ -1,3 +1,3 @@
-# **Bayernmind in javascript**
+# **Bayernminds in javascript**
 
 Mastermind with Bayern players.
