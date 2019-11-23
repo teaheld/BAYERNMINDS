@@ -6,7 +6,7 @@ var sources = [ "../images/manu.webp",
 								"../images/phil.webp"   ];
 
 var res_src = [ "../images/total_guess.png",
-									"../images/part_guess.png"  ];
+								"../images/part_guess.png"  ];
 
 class Field {
 	constructor(id, src = "../images/logo.webp") {
@@ -88,7 +88,7 @@ class Game {
 									{ return Math.min(sol, this[i]); }
 									, total_in_curr_sol)
 									.reduce(function(total, el) 
-									{return total + el; });	
+									{ return total + el; });	
 										
 		set_guessed(completely_guessed, guessed - completely_guessed);
 		
@@ -101,9 +101,14 @@ class Game {
 var game;
 
 function new_game() {
-	game = new Game(6);
+	if(game !== undefined) {
+		set_up();
+	}
 	
-	clean_up();
+	document.getElementById("tryButton").style.visibility = "visible";
+	document.getElementById("removeButton").style.visibility = "visible";
+	
+	game = new Game(6);
 }
 
 function try_solution() {
@@ -155,8 +160,7 @@ function remove_player() {
 			
 	if(-1 === i) {
 		i = 3;
-	}
-	else if(0 === i) {
+	} else if(0 === i) {
 		alert("You don't have any player on the field!");
 		return;
 	} else {
@@ -180,9 +184,9 @@ function set_guessed(total_guessed, player_guessed) {
 							} , guessed);
 }
 
-function clean_up() {
+function set_up() {
 	var i;
-	for(i = 0; i < game.max_tries; i++) {
+	for(i = 0; i < game.current_try; i++) {
 		Array.from(document.getElementsByClassName("try_" + i.toString()))
 								.forEach(function (img) 
 								{ img.src = "../images/logo.webp"; });
@@ -195,7 +199,4 @@ function clean_up() {
 	Array.from(document.getElementsByClassName("solution"))
 							.forEach(function (img) 
 							{ img.src = "../images/logo.webp"; });
-								
-	document.getElementById("tryButton").style.visibility = "visible";
-	document.getElementById("removeButton").style.visibility = "visible";
 }
