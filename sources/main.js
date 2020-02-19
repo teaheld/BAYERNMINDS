@@ -1,92 +1,13 @@
-var game;
-
-function new_game() {
-	if(game !== undefined) {
-		set_up();
-	}
-	
-	document.getElementById("tryButton").style.visibility = "visible";
-	document.getElementById("removeButton").style.visibility = "visible";
-	
-	game = new Game(6);
-}
-
-function try_solution() {
-	if(game.current_solution.some( (sol) => { return sol.src === "../images/logo.webp"}) === true) {
-		alert("Fields must not be empty!");
-		return;
-	}
-
-	const guessed = game.remove_try();
-	if(game.current_try === game.max_tries || 1 === guessed) {
-		Array.from(document.getElementsByClassName("solution"))
-								.map( (img, i) => 
-								{ img.src = game.solution[i].src; });
-		document.getElementById("tryButton").style.visibility = "hidden";
-		document.getElementById("removeButton").style.visibility = "hidden";
-		
-		if(1 === guessed) {
-			alert("Congratulations! You won!!!");
-		}
-		
-		return;
-	}
-	
-	// initialize next try
-	game.current_solution
-		.forEach( (sol) =>
-		{ sol.src =  "../images/logo.webp"; });
-}
-
-function add_player(src_id) {
-	const src = sources[src_id];
-	
-	const i = game.current_solution
-			.findIndex( (sol) =>
-			{ return sol.src === "../images/logo.webp"});
-																			
-	if(-1 === i) {
-		alert("Remove some player to put this one!");
-		return;
-	}
-		
-	game.current_solution[i].src = src;
-	document.getElementsByClassName("try_" + game.current_try.toString())[i].src = src;
-}
-
-function remove_player() {
-	let i = game.current_solution
-			.findIndex( (sol) =>
-			{ return sol.src === "../images/logo.webp"});
-			
-	if(-1 === i) {
-		i = 3;
-	} else if(0 === i) {
-		alert("You don't have any player on the field!");
-		return;
-	} else {
-		i--;
-	}
-	
-	game.current_solution[i].src = "../images/logo.webp";
-	document.getElementsByClassName("try_" + game.current_try.toString())[i].src = "../images/logo.webp";
-}
-
-function set_guessed(total_guessed, player_guessed) {
-	const guessed = [total_guessed, player_guessed];
-	Array.from(document.getElementsByClassName("res_" + game.current_try.toString()))
-							.forEach( (img, i) =>
-							{ if (i < guessed[0]) {
-								img.src = res_src[0];
-							} else if(i < guessed[0] + guessed[1]) {
-								img.src = res_src[1];
-							} else {
-								img.style.visibility = "hidden"; } 
-							});
+const try_btn = document.getElementById("tryButton"),
+      remove_btn = document.getElementById("removeButton");
+      
+function set_buttons(bool) {
+    try_btn.style.visibility = bool;
+    remove_btn.style.visibility = bool;
 }
 
 function set_up() {
-	for(let i = 0; i < game.current_try; i++) {
+	for (let i = 0; i <= TryField.count / 4; i++) {
 		Array.from(document.getElementsByClassName("try_" + i.toString()))
 								.forEach( (img) =>
 								{ img.src = "../images/logo.webp"; });
@@ -96,7 +17,73 @@ function set_up() {
 									img.style.visibility = "visible"; });
 	}
 	
-	Array.from(document.getElementsByClassName("solution"))
+	Array.from(document.getElementsByClassName("solution_0"))
 							.forEach( (img) =>
 							{ img.src = "../images/logo.webp"; });
+}
+
+let game;
+
+function new_game() {
+    if(game != undefined) {
+        set_up();
+    }
+    
+    set_buttons("visible");
+    
+    TryField.count = -1;
+    SolField.count = -1;
+    ResField.count = -1;
+    
+    game = new Game();
+}
+
+function add_player(src_id) {
+    const src = sources[src_id];
+    
+    const i = game.find_free();
+    
+    if (-1 === i) {
+        alert("Remove a player!");
+        return;
+    }
+    
+    game.current_solution[i].src = src;
+}
+
+function remove_player() {
+    let i = game.find_free();
+    
+    if (0 === i) {
+        alert("You don't have any player on the field!");
+		return;
+    } else if (-1 === i) {
+        i = 3;
+    } else {
+        --i;
+    }
+    
+    game.current_solution[i].free();
+}
+
+function try_solution() {
+    if (-1 !== game.find_free()) {
+        alert("Fields must not be empty!");
+		return;
+    }
+    
+    const guessed = game.set_guessed();
+    if (true === guessed || game.current_try == game.max_tries ) {
+        game.set_solution();
+        
+        set_buttons("hidden");
+        
+        if (true == guessed) {
+            alert("Congratulations! You won!!!");
+        }
+        
+        return;
+    }
+    
+    game.initialize_next_try();
 }
