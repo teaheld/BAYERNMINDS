@@ -7,19 +7,14 @@ function set_buttons(bool) {
 }
 
 function set_up() {
-    for (let i = 0; i <= TryField.count / 4; i++) {
-        Array.from(document.getElementsByClassName("try_" + i.toString()))
-            .forEach((img) => { img.src = "../images/logo.webp"; });
+    game.tries.forEach((tryy) => { tryy.forEach((img) => { img.src = "../images/logo.webp" }); });
 
-        Array.from(document.getElementsByClassName("res_" + i.toString()))
-            .forEach((img) => {
-                img.src = "../images/logo.webp";
-                img.style.visibility = "visible";
-            });
-    }
-
-    Array.from(document.getElementsByClassName("solution_0"))
-        .forEach((img) => { img.src = "../images/logo.webp"; });
+    game.res_fields.forEach((tryy) => {
+        tryy.forEach((img) => {
+            img.src = "../images/logo.webp";
+            img.visibility = "visible"
+        });
+    });
 }
 
 let game;
@@ -48,7 +43,7 @@ function add_player(src_id) {
         return;
     }
 
-    game.current_solution[i].src = src;
+    game.tries[Math.floor(TryField.count / 4)][i].src = src;
 }
 
 function remove_player() {
@@ -63,7 +58,7 @@ function remove_player() {
         --i;
     }
 
-    game.current_solution[i].free();
+    game.tries[Math.floor(TryField.count / 4)][i].free();
 }
 
 function try_solution() {

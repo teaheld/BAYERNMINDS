@@ -6,27 +6,35 @@ class Game {
             new SolField(sources[Math.floor(Math.random() * 6)])
         ];
 
-        this._current_solution = [new TryField(),
-            new TryField(),
-            new TryField(),
-            new TryField()
+        this._tries = [
+            [new TryField(),
+                new TryField(),
+                new TryField(),
+                new TryField()
+            ]
         ];
+
+        this._res_fields = [];
     }
 
     get solution() {
         return this._solution;
     }
 
-    get current_solution() {
-        return this._current_solution;
+    get tries() {
+        return this._tries;
+    }
+
+    get res_fields() {
+        return this._res_fields;
     }
 
     find_free() {
-        return this._current_solution.findIndex((sol) => { return sol.check_src_equality(); });
+        return this._tries[Math.floor(TryField.count / 4)].findIndex((sol) => { return sol.check_src_equality(); });
     }
 
     find_completely_guessed() {
-        return this._current_solution.filter((curr_sol, i) => {
+        return this._tries[Math.floor(TryField.count / 4)].filter((curr_sol, i) => {
             return curr_sol.check_src_equality(this._solution[i].src);
         }).length;
     }
@@ -39,7 +47,7 @@ class Game {
 
     count_in_curr() {
         return sources.map((src) => {
-            return (this._current_solution.filter((curr_sol) => { return curr_sol.check_src_equality(src); })).length
+            return (this._tries[Math.floor(TryField.count / 4)].filter((curr_sol) => { return curr_sol.check_src_equality(src); })).length
         });
     }
 
@@ -57,13 +65,13 @@ class Game {
     set_guessed() {
         const guessed = this.count_guessed();
 
-        let res_fields = [new ResField(),
+        this._res_fields.push([new ResField(),
             new ResField(),
             new ResField(),
             new ResField()
-        ];
+        ]);
 
-        res_fields.forEach((img, i) => {
+        this._res_fields[Math.floor(ResField.count / 4)].forEach((img, i) => {
             if (i < guessed[0]) {
                 img.src = res_src[0];
             } else if (i < guessed[0] + guessed[1]) {
@@ -77,11 +85,11 @@ class Game {
     }
 
     initialize_next_try() {
-        this._current_solution = [new TryField(),
+        this._tries.push([new TryField(),
             new TryField(),
             new TryField(),
             new TryField()
-        ];
+        ]);
     }
 
     set_solution() {
