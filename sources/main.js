@@ -20,17 +20,19 @@ function set_up() {
 let game;
 
 function new_game() {
-    if (game != undefined) {
+    if (game !== undefined) {
         set_up();
     }
 
     set_buttons("visible");
 
-    TryField.count = -1;
-    SolField.count = -1;
-    ResField.count = -1;
+    [TryField.count, SolField.count, ResField.count] = [-1, -1, -1];
 
     game = new Game();
+}
+
+let current_try_index = function() {
+    return Math.floor(TryField.count / 4);
 }
 
 function add_player(src_id) {
@@ -43,7 +45,7 @@ function add_player(src_id) {
         return;
     }
 
-    game.tries[Math.floor(TryField.count / 4)][i].src = src;
+    game.tries[current_try_index()][i].src = src;
 }
 
 function remove_player() {
@@ -58,7 +60,7 @@ function remove_player() {
         --i;
     }
 
-    game.tries[Math.floor(TryField.count / 4)][i].free();
+    game.tries[current_try_index()][i].free();
 }
 
 function try_solution() {
@@ -67,13 +69,14 @@ function try_solution() {
         return;
     }
 
-    const guessed = game.set_guessed();
-    if (true === guessed || TryField.count === 23) {
+    const max_tries = 5,
+        guessed = game.set_guessed();
+    if (true === guessed || current_try_index() === max_tries) {
         game.set_solution();
 
         set_buttons("hidden");
 
-        if (true == guessed) {
+        if (true === guessed) {
             alert("Congratulations! You won!!!");
         }
 

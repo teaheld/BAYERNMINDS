@@ -30,11 +30,11 @@ class Game {
     }
 
     find_free() {
-        return this._tries[Math.floor(TryField.count / 4)].findIndex((sol) => { return sol.check_src_equality(); });
+        return this._tries[current_try_index()].findIndex((sol) => { return sol.check_src_equality(); });
     }
 
     find_completely_guessed() {
-        return this._tries[Math.floor(TryField.count / 4)].filter((curr_sol, i) => {
+        return this._tries[current_try_index()].filter((curr_sol, i) => {
             return curr_sol.check_src_equality(this._solution[i].src);
         }).length;
     }
@@ -47,7 +47,7 @@ class Game {
 
     count_in_curr() {
         return sources.map((src) => {
-            return (this._tries[Math.floor(TryField.count / 4)].filter((curr_sol) => { return curr_sol.check_src_equality(src); })).length
+            return (this._tries[current_try_index()].filter((curr_sol) => { return curr_sol.check_src_equality(src); })).length
         });
     }
 
@@ -81,7 +81,7 @@ class Game {
             }
         });
 
-        return (guessed[0] == 4) ? true : false;
+        return (guessed[0] === 4) ? true : false;
     }
 
     initialize_next_try() {
