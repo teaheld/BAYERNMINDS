@@ -18,7 +18,7 @@ class Field {
     }
 
     get src() {
-        return this._field.src;
+        return src_split(this._field.src);
     }
 
     set src(src) {
@@ -30,7 +30,7 @@ class Field {
     }
 
     check_src_equality(src = "logo.webp") {
-        return (this._field.src.split("/").pop() === src.split("/").pop()) ? true : false;
+        return (this.src === src) ? true : false;
     }
 
     free() {

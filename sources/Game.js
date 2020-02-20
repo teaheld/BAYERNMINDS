@@ -41,13 +41,13 @@ class Game {
 
     count_in_sol() {
         return sources.map((src) => {
-            return (this._solution.filter((sol) => { return sol.check_src_equality(src); })).length
+            return (this._solution.filter((sol) => { return sol.check_src_equality(src_split(src)); })).length
         });
     }
 
     count_in_curr() {
         return sources.map((src) => {
-            return (this._tries[current_try_index()].filter((curr_sol) => { return curr_sol.check_src_equality(src); })).length
+            return (this._tries[current_try_index()].filter((curr_sol) => { return curr_sol.check_src_equality(src_split(src)); })).length
         });
     }
 
@@ -63,15 +63,14 @@ class Game {
     }
 
     set_guessed() {
-        const guessed = this.count_guessed();
-
         this._res_fields.push([new ResField(),
             new ResField(),
             new ResField(),
             new ResField()
         ]);
 
-        this._res_fields[Math.floor(ResField.count / 4)].forEach((img, i) => {
+        const guessed = this.count_guessed();
+        this._res_fields[current_try_index()].forEach((img, i) => {
             if (i < guessed[0]) {
                 img.src = res_src[0];
             } else if (i < guessed[0] + guessed[1]) {

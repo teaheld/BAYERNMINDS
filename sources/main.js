@@ -36,21 +36,18 @@ let current_try_index = function() {
 }
 
 function add_player(src_id) {
-    const src = sources[src_id];
-
     const i = game.find_free();
-
     if (-1 === i) {
         alert("Remove a player!");
         return;
     }
 
+    const src = sources[src_id];
     game.tries[current_try_index()][i].src = src;
 }
 
 function remove_player() {
     let i = game.find_free();
-
     if (0 === i) {
         alert("You don't have any player on the field!");
         return;
@@ -84,4 +81,8 @@ function try_solution() {
     }
 
     game.initialize_next_try();
+}
+
+function src_split(src) {
+    return src.split("/").pop();
 }
