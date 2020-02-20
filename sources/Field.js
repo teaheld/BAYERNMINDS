@@ -30,11 +30,7 @@ class Field {
     }
 
     check_src_equality(src = "logo.webp") {
-        if (this._field.src.split("/").pop() === src.split("/").pop()) {
-            return true;
-        }
-
-        return false;
+        return (this._field.src.split("/").pop() === src.split("/").pop()) ? true : false;
     }
 
     free() {
