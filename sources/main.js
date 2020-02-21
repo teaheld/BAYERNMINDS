@@ -23,7 +23,6 @@ function new_game() {
     if (game !== undefined) {
         set_up();
     }
-
     set_buttons("visible");
 
     [TryField.count, SolField.count, ResField.count] = [-1, -1, -1];
@@ -36,7 +35,11 @@ let current_try_index = function() {
 }
 
 function add_player(src_id) {
-    const i = game.find_free();
+    if (true === game.finished) {
+        return;
+    }
+
+    const i = game.find_first_free();
     if (-1 === i) {
         alert("Remove a player!");
         return;
@@ -47,31 +50,34 @@ function add_player(src_id) {
 }
 
 function remove_player() {
-    let i = game.find_free();
-    if (0 === i) {
+    let i = game.find_last_free();
+    if (-1 === i) {
         alert("You don't have any player on the field!");
         return;
-    } else if (-1 === i) {
-        i = 3;
-    } else {
-        --i;
     }
 
     game.tries[current_try_index()][i].free();
 }
 
+function remove_player_onclick(index) {
+    if (current_try_index() !== Math.floor(index / 4) || game.finished === true) {
+        return;
+    }
+
+    game.tries[Math.floor(index / 4)][index % 4].free();
+}
+
 function try_solution() {
-    if (-1 !== game.find_free()) {
+    if (3 !== game.find_last_free()) {
         alert("Fields must not be empty!");
         return;
     }
 
-    const max_tries = 5,
-        guessed = game.set_guessed();
-    if (true === guessed || current_try_index() === max_tries) {
-        game.set_solution();
-
+    const guessed = game.set_guessed();
+    if (true === guessed || current_try_index() === 5) {
+        game.finished = true;
         set_buttons("hidden");
+        game.set_solution();
 
         if (true === guessed) {
             alert("Congratulations! You won!!!");

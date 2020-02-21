@@ -15,6 +15,8 @@ class Game {
         ];
 
         this._res_fields = [];
+
+        this._finished = false;
     }
 
     get solution() {
@@ -29,8 +31,20 @@ class Game {
         return this._res_fields;
     }
 
-    find_free() {
+    get finished() {
+        return this._finished;
+    }
+
+    set finished(bool) {
+        this._finished = bool;
+    }
+
+    find_first_free() {
         return this._tries[current_try_index()].findIndex((sol) => { return sol.check_src_equality(); });
+    }
+
+    find_last_free() {
+        return this._tries[current_try_index()].map((sol) => { return sol.check_src_equality(); }).lastIndexOf(false);
     }
 
     find_completely_guessed() {
