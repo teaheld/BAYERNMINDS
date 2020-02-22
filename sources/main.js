@@ -50,7 +50,7 @@ function add_player(src_id) {
 }
 
 function remove_player() {
-    let i = game.find_last_free();
+    const i = game.find_last_player();
     if (-1 === i) {
         alert("You don't have any player on the field!");
         return;
@@ -68,7 +68,7 @@ function remove_player_onclick(index) {
 }
 
 function try_solution() {
-    if (3 !== game.find_last_free()) {
+    if (-1 !== game.find_first_free()) {
         alert("Fields must not be empty!");
         return;
     }
@@ -76,11 +76,14 @@ function try_solution() {
     const guessed = game.set_guessed();
     if (true === guessed || current_try_index() === 5) {
         game.finished = true;
+        const res = game.calculate_score(guessed);
         set_buttons("hidden");
         game.set_solution();
 
         if (true === guessed) {
-            alert("Congratulations! You won!!!");
+            alert("Congratulations! You won!!! Your score is " + res + "!");
+        } else {
+            alert("Unfortunately, you didn't win, but your score " + res + " is very good!");
         }
 
         return;

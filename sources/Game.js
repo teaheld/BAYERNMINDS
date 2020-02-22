@@ -17,6 +17,9 @@ class Game {
         this._res_fields = [];
 
         this._finished = false;
+        this._start_time = new Date().getTime();
+        this._end_time = undefined;
+        this._score = 0;
     }
 
     get solution() {
@@ -43,7 +46,7 @@ class Game {
         return this._tries[current_try_index()].findIndex((sol) => { return sol.check_src_equality(); });
     }
 
-    find_last_free() {
+    find_last_player() {
         return this._tries[current_try_index()].map((sol) => { return sol.check_src_equality(); }).lastIndexOf(false);
     }
 
@@ -107,5 +110,11 @@ class Game {
 
     set_solution() {
         this._solution.forEach((sol) => { sol.visibility = "visible"; });
+    }
+
+    // TODO : better algorithm
+    calculate_score(guessed) {
+        this._end_time = new Date().getTime();
+        return Math.floor((this._end_time - this._start_time) / 900) + ((guessed === true) ? 0 : 1000);
     }
 }
