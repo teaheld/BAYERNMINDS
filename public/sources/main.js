@@ -43,7 +43,7 @@ let current_try_index = function() {
 };
 
 function add_player(src_id) {
-    if (true === game.finished) {
+    if (undefined === game || true === game.finished) {
         return;
     }
 

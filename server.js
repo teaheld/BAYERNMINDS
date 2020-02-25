@@ -1,8 +1,17 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const MongoClient = require('mongodb').MongoClient;
+const assert = require('assert');
 
 const port = 3000;
 const app = express();
+
+// Connection URL
+const url = 'mongodb://localhost:27017';
+
+// Database Name
+const dbName = 'db';
+
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(function(req, res, next) {
@@ -12,7 +21,7 @@ app.use(function(req, res, next) {
     next();
 });
 
-let users = [{
+/*let users = [{
         "name": "Tea",
         "score": 1000
     },
@@ -20,20 +29,46 @@ let users = [{
         "name": "Milos",
         "score": 2
     }
-];
+];*/
 
 app.get('/users', (request, response) => {
-    response.send(users);
+    let users = [];
+
+    MongoClient.connect(url, (err, client) => {
+        assert.equal(null, err);
+
+        const db = client.db(dbName);
+        let cursor = db.collection('users').find();
+        cursor.forEach((doc, err) => {
+            assert.equal(null, err);
+
+            users.push(doc);
+        }, () => {
+            client.close();
+
+            response.send(users);
+        });
+    });
 });
 
 const jsonParser = bodyParser.json();
 const textParser = bodyParser.text();
 
 app.post('/users', [jsonParser, textParser], (request, response) => {
-    const requestBody = request.body;
-    users.push({
-        name: requestBody.name,
-        score: requestBody.score
+    const user = {
+        name: request.body.name,
+        score: request.body.score
+    };
+
+    MongoClient.connect(url, (err, client) => {
+        assert.equal(null, err);
+
+        const db = client.db('db');
+        db.collection('users').insertOne(user, (err, res) => {
+            assert.equal(null, err);
+
+            client.close();
+        });
     });
 
     response.send('Success');
