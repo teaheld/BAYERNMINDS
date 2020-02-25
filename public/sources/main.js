@@ -1,9 +1,17 @@
-const try_btn = document.getElementById("tryButton"),
-    remove_btn = document.getElementById("removeButton");
+const buttons = [
+    [document.getElementById("tryButton"),
+        document.getElementById("removeButton")
+    ],
+    [document.getElementById("postButton"),
+        document.getElementById("name")
+    ]
+];
 
 function set_buttons(bool) {
-    try_btn.style.visibility = bool;
-    remove_btn.style.visibility = bool;
+    buttons[0].forEach((btn) => { btn.style.visibility = bool; });
+
+    const _bool = (bool === "hidden") ? "visible" : "hidden";
+    buttons[1].forEach((btn) => { btn.style.visibility = _bool; });
 }
 
 function set_up() {
@@ -32,7 +40,7 @@ function new_game() {
 
 let current_try_index = function() {
     return Math.floor(TryField.count / 4);
-}
+};
 
 function add_player(src_id) {
     if (true === game.finished) {
@@ -76,20 +84,43 @@ function try_solution() {
     const guessed = game.set_guessed();
     if (true === guessed || current_try_index() === 5) {
         game.finished = true;
-        const res = game.calculate_score(guessed);
+        game.calculate_score(guessed);
         set_buttons("hidden");
         game.set_solution();
 
         if (true === guessed) {
-            alert("Congratulations! You won!!! Your score is " + res + "!");
+            alert("Congratulations! You won!!! Your score is " + game.score + "!");
         } else {
-            alert("Unfortunately, you didn't win, but your score " + res + " is very good!");
+            alert("Unfortunately, you didn't win, but your score " + game.score + " is very good!");
         }
 
         return;
     }
 
     game.initialize_next_try();
+}
+
+function postJSON(data) {
+    fetch('http://localhost:3000/users', {
+            method: 'POST', // or 'PUT'
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        })
+        .then((response) => response.text())
+        .then((msg) => console.log(msg))
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+}
+
+function post_score() {
+    const data = { name: buttons[1][1].value.trim() || "Bastian Schweinsteiger", score: game.score };
+
+    postJSON(data);
+
+    buttons[1].forEach((btn) => { btn.style.visibility = "hidden"; });
 }
 
 function src_split(src) {

@@ -38,6 +38,10 @@ class Game {
         return this._finished;
     }
 
+    get score() {
+        return this._score;
+    }
+
     set finished(bool) {
         this._finished = bool;
     }
@@ -115,6 +119,6 @@ class Game {
     // TODO : better algorithm
     calculate_score(guessed) {
         this._end_time = new Date().getTime();
-        return Math.floor((this._end_time - this._start_time) / 900) + ((guessed === true) ? 0 : 1000);
+        this._score = Math.floor((this._end_time - this._start_time) / 900) + ((guessed === true) ? 0 : 1000);
     }
 }
