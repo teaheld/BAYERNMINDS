@@ -21,16 +21,6 @@ app.use(function(req, res, next) {
     next();
 });
 
-/*let users = [{
-        "name": "Tea",
-        "score": 1000
-    },
-    {
-        "name": "Milos",
-        "score": 2
-    }
-];*/
-
 app.get('/users', (request, response) => {
     let users = [];
 

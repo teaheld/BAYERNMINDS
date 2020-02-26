@@ -119,6 +119,6 @@ class Game {
     // TODO : better algorithm
     calculate_score(guessed) {
         this._end_time = new Date().getTime();
-        this._score = Math.floor((this._end_time - this._start_time) / 900) + ((guessed === true) ? 0 : 1000);
+        this._score = (guessed === true) ? (1000 * (6 - current_try_index())) : 0;
     }
 }

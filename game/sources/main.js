@@ -91,7 +91,7 @@ function try_solution() {
         if (true === guessed) {
             alert("Congratulations! You won!!! Your score is " + game.score + "!");
         } else {
-            alert("Unfortunately, you didn't win, but your score " + game.score + " is very good!");
+            alert("Try again! Your score is 0 :(");
         }
 
         return;
