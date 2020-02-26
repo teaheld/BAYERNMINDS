@@ -17,8 +17,6 @@ class Game {
         this._res_fields = [];
 
         this._finished = false;
-        this._start_time = new Date().getTime();
-        this._end_time = undefined;
         this._score = 0;
     }
 
@@ -116,9 +114,7 @@ class Game {
         this._solution.forEach((sol) => { sol.visibility = "visible"; });
     }
 
-    // TODO : better algorithm
     calculate_score(guessed) {
-        this._end_time = new Date().getTime();
         this._score = (guessed === true) ? (1000 * (6 - current_try_index())) : 0;
     }
 }
