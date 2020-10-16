@@ -31,7 +31,7 @@
 }
 
 .central {
-    margin-top: 50px;
+    margin-top: 44px;
     display: flex;
     height: 75%;
     justify-content: center;
@@ -43,7 +43,25 @@
     background-color: #0369a0;
     border-radius: 5%;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: left;
+    align-items: left;
     height: 100%;
+}
+
+#buttons {
+    display: flex;
+    flex-direction: column;
+    margin-right: 10px;
+    margin-left: 10px;
+    justify-content: center;
+}
+
+button {
+    background-color: #a01439;
+    width: 63px;
+    height: 40px;
+    border-radius: 5px;
+    border: none;
+    color: white;
+    margin-bottom: 20px;
 }

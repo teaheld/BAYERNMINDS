@@ -1,0 +1,11 @@
+img {
+    width: 63.5px;
+    height: 63.5px;
+    display: block;
+}
+
+.field-wrap {
+    background-color: #dc052c;
+    border-radius: 3px;
+    margin: 1.5px;
+}
