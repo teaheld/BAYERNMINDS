@@ -9,6 +9,7 @@ import { GameFieldComponent } from './game/game-field/game-field.component';
 import { GameRowComponent } from './game/game-row/game-row.component';
 import { ChoosePlayersTableComponent } from './game/choose-players-table/choose-players-table.component';
 import { SolutionTableComponent } from './game/solution-table/solution-table.component';
+import { GuessFieldComponent } from './game/game-field/guess-field/guess-field.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { SolutionTableComponent } from './game/solution-table/solution-table.com
     GameFieldComponent,
     GameRowComponent,
     ChoosePlayersTableComponent,
-    SolutionTableComponent
+    SolutionTableComponent,
+    GuessFieldComponent
   ],
   imports: [
     BrowserModule,
