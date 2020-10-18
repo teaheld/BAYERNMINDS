@@ -4,7 +4,7 @@ module.exports.newGame = async(req, res, next) => {
     try {
         const newGame = await Game.newGame();
 
-        res.json({ gameId: newGame._id });
+        res.json(newGame);
     } catch (err) {
         next(err);
     }

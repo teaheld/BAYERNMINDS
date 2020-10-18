@@ -41,6 +41,7 @@ gameSchema.statics.newGame = async function() {
     });
 
     const newGame = await game.save();
+    await newGame.populate('field0 field1 field2 field3').execPopulate();
 
     return newGame;
 }

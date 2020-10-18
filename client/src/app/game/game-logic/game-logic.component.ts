@@ -19,8 +19,10 @@ export class GameLogicComponent implements OnInit, OnDestroy {
 
   newGame() {
     const sub = this.gameService.newGame()
-      .subscribe((res: { gameId: string }) => {
-        localStorage.setItem('gameId', JSON.stringify(res.gameId));
+      .subscribe((res: any) => {
+        console.log(res);
+        this.gameService.showSolution(res.field0, res.field1, res.field2, res.field3);
+        localStorage.setItem('gameId', JSON.stringify(res._id));
         localStorage.setItem('currentTry', JSON.stringify(0));
 
         this.buttonVisibility = 'visible';
@@ -30,7 +32,11 @@ export class GameLogicComponent implements OnInit, OnDestroy {
   }
 
   trySolution() {
+    this.gameService.trySolution();
+  }
 
+  removePlayer() {
+    this.gameService.removeLastPlayerFromTable();
   }
 
   ngOnDestroy(): void {

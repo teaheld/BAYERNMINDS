@@ -1,6 +1,12 @@
-<div class="sol">
-    <!--<app-game-field></app-game-field>
-    <app-game-field></app-game-field>
-    <app-game-field></app-game-field>
-    <app-game-field></app-game-field>-->
+<div class="sol" *ngIf="fields">
+    <app-solution-field [_imagePath]="fields.field0.imagePath"></app-solution-field>
+    <app-solution-field [_imagePath]="fields.field1.imagePath"></app-solution-field>
+    <app-solution-field [_imagePath]="fields.field2.imagePath"></app-solution-field>
+    <app-solution-field [_imagePath]="fields.field3.imagePath"></app-solution-field>
+</div>
+<div class="sol" *ngIf="!fields">
+    <app-solution-field></app-solution-field>
+    <app-solution-field></app-solution-field>
+    <app-solution-field></app-solution-field>
+    <app-solution-field></app-solution-field>
 </div>
