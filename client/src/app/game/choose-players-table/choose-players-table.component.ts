@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Player } from './../player.model';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-choose-players-table',
@@ -6,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./choose-players-table.component.css']
 })
 export class ChoosePlayersTableComponent implements OnInit {
+  @Input() players: Player[];
 
   constructor() { }
 

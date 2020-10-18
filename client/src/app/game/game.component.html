@@ -6,13 +6,9 @@
     <div class="central">
         <div class="game">
             <app-left-table></app-left-table>
-            <app-left-table></app-left-table>
-            <div id="buttons">
-                <button type="button" id="tryButton" onclick="try_solution()"> <b> TRY </b> </button>
-                <button type="button" id="removeButton" onclick="remove_player()"> <b> REM OVE </b> </button>
-                <button type="button" onclick="new_game()"> <b> NEW GAME </b> </button>
-            </div>
-            <app-choose-players-table></app-choose-players-table>
+            <app-right-table></app-right-table>
+            <app-game-logic></app-game-logic>
+            <app-choose-players-table [players]="players"></app-choose-players-table>
             <app-solution-table></app-solution-table>
         </div>
     </div>

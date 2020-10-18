@@ -9,8 +9,11 @@ import { Component, OnInit } from '@angular/core';
 export class GuessFieldComponent extends GameFieldComponent {
 
   constructor() {
-    super(true);
+    super();
    }
 
+  onClick() {
+    console.log('Hello from GuessField');
+  }
 
 }

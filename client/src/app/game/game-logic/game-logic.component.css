@@ -1,0 +1,17 @@
+#buttons {
+    display: flex;
+    flex-direction: column;
+    margin-right: 10px;
+    margin-left: 10px;
+    margin-top: 127px;
+}
+
+button {
+    background-color: #a01439;
+    width: 63px;
+    height: 40px;
+    border-radius: 5px;
+    border: none;
+    color: white;
+    margin-bottom: 20px;
+}
