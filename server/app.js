@@ -32,5 +32,7 @@ app.use((req, res, next) => {
 
 const playersRoutes = require('./routes/players');
 app.use('/players', playersRoutes);
+const gamesRoutes = require('./routes/games');
+app.use('/games', gamesRoutes);
 
 module.exports = app;

@@ -1,6 +1,6 @@
 <div class="row" style="display: flex; flex-direction: row;">
-    <app-guess-field></app-guess-field>
-    <app-guess-field></app-guess-field>
-    <app-guess-field></app-guess-field>
-    <app-guess-field></app-guess-field>
+    <app-guess-field [event]="changeSubjects[0].asObservable()"></app-guess-field>
+    <app-guess-field [event]="changeSubjects[1].asObservable()"></app-guess-field>
+    <app-guess-field [event]="changeSubjects[2].asObservable()"></app-guess-field>
+    <app-guess-field [event]="changeSubjects[3].asObservable()"></app-guess-field>
 </div>
