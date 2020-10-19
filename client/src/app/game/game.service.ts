@@ -64,12 +64,16 @@ export class GameService implements OnDestroy {
     if (-1 === nonFreeFieldIndex) {
       alert(`You don't have any players!`);
     } else {
-      const currentSolution = JSON.parse(localStorage.getItem('currentSolution'));
-      currentSolution[nonFreeFieldIndex] = '_id';
-      localStorage.setItem('currentSolution', JSON.stringify(currentSolution));
+      this.removePlayerFromTable(nonFreeFieldIndex);
 
-      this._newPlayerOnTable.next({_id: 'none', imagePath: this.logoUrl , freeFieldIndex: nonFreeFieldIndex});
+      this._newPlayerOnTable.next({_id: '_id', imagePath: this.logoUrl , freeFieldIndex: nonFreeFieldIndex});
     }
+  }
+
+  public removePlayerFromTable(index: number) {
+    const currentSolution = JSON.parse(localStorage.getItem('currentSolution'));
+    currentSolution[index] = '_id';
+    localStorage.setItem('currentSolution', JSON.stringify(currentSolution));
   }
 
   public trySolution() {

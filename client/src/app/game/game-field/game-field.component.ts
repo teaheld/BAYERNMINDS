@@ -6,8 +6,9 @@ import { Component, Inject, Input, OnInit } from '@angular/core';
   styleUrls: ['./game-field.component.css']
 })
 export class GameFieldComponent implements OnInit {
+  protected readonly logoUrl = '../assets/asset-images/logo.webp';
   // tslint:disable: variable-name
-  @Input() _imagePath = '../assets/asset-images/logo.webp';
+  @Input() _imagePath = this.logoUrl;
 
   public set imagePath(imagePath: string) {
     this._imagePath = imagePath;

@@ -1,3 +1,4 @@
+import { GameService } from './../../game.service';
 import { GameFieldComponent } from './../game-field.component';
 import { Component, Input, OnInit } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
@@ -10,9 +11,10 @@ import { Player } from '../../player.model';
 })
 export class GuessFieldComponent extends GameFieldComponent implements OnInit{
   @Input() event: Observable<Player>;
+  @Input() index: number;
   private eventSub: Subscription;
 
-  constructor() {
+  constructor(private gameService: GameService) {
     super();
    }
 
@@ -22,8 +24,11 @@ export class GuessFieldComponent extends GameFieldComponent implements OnInit{
         this.imagePath = res.imagePath;
       });
    }
+
   onClick() {
-    console.log('Hello from GuessField');
+    this.gameService.removePlayerFromTable(this.index);
+
+    this.imagePath = this.logoUrl;
   }
 
 }
