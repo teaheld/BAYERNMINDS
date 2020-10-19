@@ -39,6 +39,12 @@ gameSchema.statics.newGame = async function() {
     return newGame;
 }
 
+gameSchema.statics.getTries = async function(gameId) {
+    const tries = this.findById(gameId, 'tries -_id').exec();
+
+    return tries;
+}
+
 const Game = mongoose.model('Game', gameSchema);
 
 module.exports = Game;

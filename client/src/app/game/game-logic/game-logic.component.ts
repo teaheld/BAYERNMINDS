@@ -19,12 +19,15 @@ export class GameLogicComponent implements OnInit, OnDestroy {
 
   newGame() {
     const sub = this.gameService.newGame()
-      .subscribe((res: any) => {
-        this.gameService.showSolution(res.tries[0].fields);
+      .subscribe((res: boolean) => {
+        if (res) {
+          this.buttonVisibility = 'visible';
+        }
+        /*this.gameService.showSolution(res.tries[0].fields);
         localStorage.setItem('gameId', JSON.stringify(res._id));
         localStorage.setItem('currentTry', JSON.stringify(0));
 
-        this.buttonVisibility = 'visible';
+        this.buttonVisibility = 'visible';*/
       });
 
     this.activeSubs.push(sub);
