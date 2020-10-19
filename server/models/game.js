@@ -7,41 +7,34 @@ const gameSchema = mongoose.Schema({
         enum: [0, 1, 2, 3, 4, 5],
         default: 0
     },
-    field0: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: Field
-    },
-    field1: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: Field
-    },
-    field2: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: Field
-    },
-    field3: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: Field
-    }
+    tries: [{
+        tryIndex: {
+            type: Number,
+            // 6th try is the actual solution
+            enum: [0, 1, 2, 3, 4, 5, 6],
+            default: 6
+        },
+        fields: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: Field,
+            default: []
+        }]
+    }]
 });
 
 gameSchema.statics.newGame = async function() {
-    const fields = await Field.getPlayers();
+    const allFields = await Field.getPlayers();
 
-    const field0 = fields[Math.floor(Math.random() * 6)]._id;
-    const field1 = fields[Math.floor(Math.random() * 6)]._id;
-    const field2 = fields[Math.floor(Math.random() * 6)]._id;
-    const field3 = fields[Math.floor(Math.random() * 6)]._id;
+    const fields = Array.from(Array(4), (el) => allFields[Math.floor(Math.random() * 6)]._id);
 
     const game = new this({
-        field0,
-        field1,
-        field2,
-        field3
+        tries: {
+            fields
+        }
     });
 
     const newGame = await game.save();
-    await newGame.populate('field0 field1 field2 field3').execPopulate();
+    await newGame.populate('tries.fields').execPopulate();
 
     return newGame;
 }

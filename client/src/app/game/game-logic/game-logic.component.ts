@@ -20,8 +20,7 @@ export class GameLogicComponent implements OnInit, OnDestroy {
   newGame() {
     const sub = this.gameService.newGame()
       .subscribe((res: any) => {
-        console.log(res);
-        this.gameService.showSolution(res.field0, res.field1, res.field2, res.field3);
+        this.gameService.showSolution(res.tries[0].fields);
         localStorage.setItem('gameId', JSON.stringify(res._id));
         localStorage.setItem('currentTry', JSON.stringify(0));
 

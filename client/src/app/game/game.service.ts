@@ -22,8 +22,8 @@ export class GameService {
     return this._getSolution.asObservable();
   }
 
-  public showSolution(field0, field1, field2, field3) {
-    this._getSolution.next({ field0, field1, field2, field3 });
+  public showSolution(fields) {
+    this._getSolution.next(fields);
   }
 
   public get newPlayerOnTable() {

@@ -1,3 +1,4 @@
+import { Player } from './../player.model';
 import { GameService } from './../game.service';
 import { Subscription } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
@@ -13,8 +14,7 @@ export class SolutionTableComponent implements OnInit {
 
   constructor(private gameService: GameService) {
     this.solutionReadySub = this.gameService.getSolution
-      .subscribe((res) => {
-        console.log(res);
+      .subscribe((res: Player) => {
         this.fields = res;
       });
    }

@@ -1,8 +1,5 @@
 <div class="sol" *ngIf="fields">
-    <app-solution-field [_imagePath]="fields.field0.imagePath"></app-solution-field>
-    <app-solution-field [_imagePath]="fields.field1.imagePath"></app-solution-field>
-    <app-solution-field [_imagePath]="fields.field2.imagePath"></app-solution-field>
-    <app-solution-field [_imagePath]="fields.field3.imagePath"></app-solution-field>
+    <app-solution-field *ngFor="let field of fields" [_imagePath]="field.imagePath"></app-solution-field>
 </div>
 <div class="sol" *ngIf="!fields">
     <app-solution-field></app-solution-field>
