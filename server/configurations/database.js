@@ -9,11 +9,7 @@ const connectToDB = (database = 'bayernminds') => {
             useUnifiedTopology: true
         })
         .then(() => {
-            mongoose.connection.db.dropDatabase();
-
             console.log(`Connected to the database ${database}!`);
-
-            Field.addPlayers();
         })
         .catch(err => {
             console.error(err);

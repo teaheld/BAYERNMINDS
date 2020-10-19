@@ -2,7 +2,7 @@ import { GameFieldComponent } from './game-field/game-field.component';
 import { Player } from './player.model';
 import { Injectable, OnDestroy, Optional } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Subject, Subscription } from 'rxjs';
+import { EMPTY, empty, Subject, Subscription } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { FileDetector } from 'protractor';
 
@@ -81,7 +81,14 @@ export class GameService implements OnDestroy {
 
     if (-1 !== freeFieldIndex) {
       alert('Please add a player');
+      return EMPTY;
     } else {
+      const gameId = JSON.parse(localStorage.getItem('gameId'));
+      const body = {
+         currentSolution: JSON.parse(localStorage.getItem('currentSolution'))
+      };
+
+      return this.http.post(this.url + `games/${gameId}/tries`, body);
     }
   }
 

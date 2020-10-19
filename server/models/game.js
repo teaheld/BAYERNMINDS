@@ -40,9 +40,47 @@ gameSchema.statics.newGame = async function() {
 }
 
 gameSchema.statics.getTries = async function(gameId) {
-    const tries = this.findById(gameId, 'tries -_id').exec();
+    const tries = await this.findById(gameId, 'tries -_id').exec();
 
     return tries;
+}
+
+gameSchema.statics.countGuessed = async function(gameId, currentSolution) {
+    const game = await this.findById(gameId).exec();
+
+    await game.addTry(currentSolution);
+
+    const countInSolution = await game.countInSolution(6);
+    const countInCurrentSolution = await game.countInSolution();
+    const completelyGuessed = await game.countCompletelyGuessed();
+
+    const guessed = countInSolution.map((sol, i) => { return Math.min(sol, countInCurrentSolution[i]) })
+        .reduce((sum, el) => { return sum + el; });
+
+    return { completelyGuessed, partialyGuessed: guessed - completelyGuessed };
+}
+
+gameSchema.methods.countInSolution = async function(index) {
+    index = index | this.currentTry;
+    const players = await Field.getPlayers();
+    const solution = this.tries.find(tri => tri.tryIndex === index).fields;
+
+    return players.map((player) => {
+        return (solution.filter((sol) => { return player._id.equals(sol) })).length
+    });
+}
+
+gameSchema.methods.countCompletelyGuessed = async function() {
+    const currentSolution = this.tries.find(tri => tri.tryIndex === this.currentTry).fields;
+    const solution = this.tries.find(tri => tri.tryIndex === 6).fields;
+
+    return currentSolution.filter((currSol, i) => {
+        return currSol.equals(solution[i])
+    }).length;
+}
+
+gameSchema.methods.addTry = async function(currentSolution) {
+    this.tries.push({ tryIndex: this.currentTry, fields: currentSolution });
 }
 
 const Game = mongoose.model('Game', gameSchema);

@@ -34,7 +34,10 @@ export class GameLogicComponent implements OnInit, OnDestroy {
   }
 
   trySolution() {
-    this.gameService.trySolution();
+    const sub = this.gameService.trySolution()
+      .subscribe((res) => {
+        console.log(res);
+      });
   }
 
   removePlayer() {

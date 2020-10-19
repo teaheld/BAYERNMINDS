@@ -21,3 +21,16 @@ module.exports.getTries = async(req, res, next) => {
         next(err);
     }
 }
+
+module.exports.postTry = async(req, res, next) => {
+    const gameId = req.params.gameId;
+    const currentSolution = req.body.currentSolution;
+
+    try {
+        const guessed = await Game.countGuessed(gameId, currentSolution);
+
+        res.json(guessed);
+    } catch (err) {
+        next(err);
+    }
+}
