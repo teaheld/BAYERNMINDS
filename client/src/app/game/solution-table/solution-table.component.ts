@@ -1,6 +1,5 @@
 import { GameLogicService } from './../game-logic/game-logic.service';
 import { Player } from './../player.model';
-import { GameService } from './../game.service';
 import { Subscription } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 
@@ -13,11 +12,9 @@ export class SolutionTableComponent implements OnInit {
   private solutionReadySub: Subscription;
   public fields;
 
-  constructor(private gameService: GameService,
-              private gameLogicService: GameLogicService) {
+  constructor(private gameLogicService: GameLogicService) {
     this.solutionReadySub = this.gameLogicService.getSolution
       .subscribe((res: Player) => {
-        console.log(res);
         this.fields = res;
       });
    }

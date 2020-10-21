@@ -10,23 +10,27 @@ import { Player } from '../../player.model';
   styleUrls: ['../game-field.component.css']
 })
 export class GuessedFieldComponent extends GameFieldComponent implements OnInit {
-  @Input() event: Observable<Player>;
   @Input() index: number;
-  private eventSub: Subscription;
+  private activeSubs: Subscription[] = [];
 
   constructor(protected gameLogicService: GameLogicService) {
     super(gameLogicService);
   }
 
   ngOnInit(): void {
-    this.eventSub = this.event
-      .subscribe((res: Player) => {
-        if (res.imagePath === '') {
-          this.visible = 'hidden';
-        } else {
-        this.imagePath = res.imagePath;
+    const sub = this.gameLogicService.getResult
+      .subscribe((res: {imagePath: string, index: number}) => {
+        if (res.index === this.index) {
+          if (res.imagePath !== '') {
+            this.imagePath = res.imagePath;
+            this.visible = 'visible';
+          } else {
+            this.visible = 'hidden';
+          }
         }
       });
+
+    this.activeSubs.push(sub);
   }
 
   onClick() {

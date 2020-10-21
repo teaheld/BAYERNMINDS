@@ -1,5 +1,4 @@
 import { GameLogicService } from './../../game-logic/game-logic.service';
-import { GameService } from './../../game.service';
 import { GameFieldComponent } from './../game-field.component';
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
@@ -10,23 +9,20 @@ import { Player } from '../../player.model';
   styleUrls: ['../game-field.component.css']
 })
 export class GuessFieldComponent extends GameFieldComponent implements OnInit, OnDestroy{
-  @Input() event: Observable<Player>;
   @Input() index: number;
-  private eventSub: Subscription;
   private isClickable = false;
   private activeSubs: Subscription[] = [];
 
-  constructor(private gameService: GameService,
-              protected gameLogicService: GameLogicService) {
+  constructor(protected gameLogicService: GameLogicService) {
     super(gameLogicService);
     const sub = this.gameLogicService.isClickable
       .subscribe((res: { clickable: boolean, index?: number}) => {
-        if (res.index) {
+        if (res.index === undefined) {
+          this.isClickable = res.clickable;
+        } else {
           if (res.index === this.index) {
             this.isClickable = res.clickable;
           }
-        } else {
-          this.isClickable = res.clickable;
         }
 
       });
@@ -34,17 +30,20 @@ export class GuessFieldComponent extends GameFieldComponent implements OnInit, O
     this.activeSubs.push(sub);
   }
 
-   ngOnInit(): void {
-     this.eventSub = this.event
-      .subscribe((res: Player) => {
-        this.imagePath = res.imagePath;
+  ngOnInit(): void {
+    const sub = this.gameLogicService.playerChanged
+      .subscribe((res: {imagePath: string, index: number}) => {
+        if (res.index === this.index) {
+          this.imagePath = res.imagePath;
+        }
       });
-   }
+
+    this.activeSubs.push(sub);
+  }
 
   onClick() {
     if (this.isClickable) {
       this.gameLogicService.removePlayerFromTable(this.index);
-      console.log('Evo');
 
       this.imagePath = this.logoUrl;
     }

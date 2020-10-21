@@ -1,6 +1,5 @@
 import { GameServerService } from './game-server.service';
 import { Player } from './player.model';
-import { GameService } from './game.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 

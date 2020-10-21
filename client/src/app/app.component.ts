@@ -1,4 +1,3 @@
-import { GameService } from './game/game.service';
 import { Component } from '@angular/core';
 
 @Component({

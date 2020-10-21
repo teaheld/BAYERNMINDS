@@ -1,6 +1,5 @@
 import { GameLogicService } from './../../game-logic/game-logic.service';
 import { Player } from './../../player.model';
-import { GameService } from './../../game.service';
 import { Subject, Subscription } from 'rxjs';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 
@@ -11,27 +10,12 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 })
 export class LeftRowComponent implements OnInit, OnDestroy {
   @Input() id: number;
-  public changeSubjects: Subject<Player>[] = [
-    new Subject<Player>(),
-    new Subject<Player>(),
-    new Subject<Player>(),
-    new Subject<Player>() ];
   private activeSubs: Subscription[] = [];
 
 
-  constructor(private gameService: GameService,
-              private gameLogicService: GameLogicService) { }
+  constructor(private gameLogicService: GameLogicService) { }
 
   ngOnInit(): void {
-    const sub = this.gameLogicService.playerChanged
-      .subscribe((res: {_id: string, imagePath: string, freeFieldIndex: number}) => {
-        const currentTry = JSON.parse(localStorage.getItem('currentTry'));
-        if (currentTry === this.id) {
-          this.changeSubjects[res.freeFieldIndex].next({_id: res._id, imagePath: res.imagePath});
-        }
-      });
-
-    this.activeSubs.push(sub);
   }
 
   ngOnDestroy(): void {

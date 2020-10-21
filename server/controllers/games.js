@@ -34,3 +34,15 @@ module.exports.postTry = async(req, res, next) => {
         next(err);
     }
 }
+
+module.exports.getSolution = async(req, res, next) => {
+    const gameId = req.params.gameId;
+
+    try {
+        const solution = await Game.getSolution(gameId);
+
+        res.json(solution);
+    } catch (err) {
+        next(err);
+    }
+}

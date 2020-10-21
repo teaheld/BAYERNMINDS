@@ -9,18 +9,11 @@ import { Component, Inject, Input, OnInit, OnDestroy } from '@angular/core';
 })
 export class GameFieldComponent implements OnInit, OnDestroy {
   protected readonly logoUrl = '../assets/asset-images/logo.webp';
-  // protected isClickable = false;
   // tslint:disable: variable-name
   @Input() private _imagePath = this.logoUrl;
   private _visible: 'visible' | 'hidden' = 'visible';
-  //private activeSubs: Subscription[];
 
-  constructor(protected gameLogicService: GameLogicService) {
-    /*const sub = this.gameLogicService.isClickable
-      .subscribe((res: boolean) => {
-        this.isClickable = res;
-      });*/
-  }
+  constructor(protected gameLogicService: GameLogicService) { }
 
   public set imagePath(imagePath: string) {
     this._imagePath = imagePath;
@@ -39,7 +32,6 @@ export class GameFieldComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    console.log(this._imagePath);
   }
 
   onClick() {
@@ -47,8 +39,6 @@ export class GameFieldComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    /*this.activeSubs.forEach((sub: Subscription) => {
-      sub.unsubscribe();
-    });*/
+
   }
 }

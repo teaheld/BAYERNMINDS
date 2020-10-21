@@ -12,8 +12,8 @@ export class GameLogicService implements OnDestroy{
   private _isClickable = new Subject<{ clickable: boolean, index?: number}>();
   private _gameOn = new Subject<boolean>();
   private _getSolution = new Subject<{}>();
-  private _playerChanged = new Subject<{}>();
-  private _getResult = new Subject<{}>();
+  private _playerChanged = new Subject<{imagePath: string, index: number}>();
+  private _getResult = new Subject<{imagePath: string, index: number}>();
   private activeSubs: Subscription[] = [];
 
   constructor(private gameServerService: GameServerService) { }
@@ -46,12 +46,12 @@ export class GameLogicService implements OnDestroy{
     this._getSolution.next(fields);
   }
 
-  public setPlayerChanged(boolean: boolean) {
-    this._playerChanged.next(boolean);
+  public setPlayerChanged(imagePath: string, index: number) {
+    this._playerChanged.next({imagePath, index});
   }
 
-  public setResult(fields) {
-    this._getResult.next(fields);
+  public setResult(imagePath: string, index: number) {
+    this._getResult.next({imagePath, index});
   }
 
   public setGameOn(visible: boolean) {
@@ -79,8 +79,6 @@ export class GameLogicService implements OnDestroy{
 
     const sub = this.gameServerService.newGame()
       .subscribe((game: Game) => {
-        this.setSolution(game.tries[0].fields);
-
         const currentSolution = Array(4).fill('_id');
         localStorage.setItem('gameId', JSON.stringify(game._id));
         localStorage.setItem('currentTry', JSON.stringify(game.currentTry));
@@ -103,13 +101,15 @@ export class GameLogicService implements OnDestroy{
       currentSolution[freeFieldIndex] = playerId;
       localStorage.setItem('currentSolution', JSON.stringify(currentSolution));
 
-      this._playerChanged.next({_id: playerId, imagePath , freeFieldIndex});
+      const currentTry = JSON.parse(localStorage.getItem('currentTry'));
+      this._playerChanged.next({imagePath , index: currentTry * 4 + freeFieldIndex});
     }
   }
 
   public removePlayerFromTable(index: number) {
     const currentSolution = JSON.parse(localStorage.getItem('currentSolution'));
-    currentSolution[index] = '_id';
+    const currentTry = JSON.parse(localStorage.getItem('currentTry'));
+    currentSolution[Math.floor(index % 4)] = '_id';
     localStorage.setItem('currentSolution', JSON.stringify(currentSolution));
   }
 
@@ -122,25 +122,23 @@ export class GameLogicService implements OnDestroy{
       this.removePlayerFromTable(nonFreeFieldIndex);
 
       const currentTry = JSON.parse(localStorage.getItem('currentTry'));
-      this._playerChanged.next({_id: '_id', imagePath: this.logoUrl , freeFieldIndex: currentTry * 4 + nonFreeFieldIndex});
+      this._playerChanged.next({imagePath: this.logoUrl , index: currentTry * 4 + nonFreeFieldIndex});
     }
   }
 
   public setGuessed(guessed) {
+    const currentTry = JSON.parse(localStorage.getItem('currentTry'));
     const fields = [{imagePath: ''}, {imagePath: ''}, {imagePath: ''}, {imagePath: ''}];
-    console.log(guessed);
 
     fields.forEach((el, i) => {
-      console.log(i, guessed.completelyGuessed, guessed.partialyGuessed);
       if (i < guessed.completelyGuessed) {
         el.imagePath = '../assets/asset-images/total_guess.png';
-        console.log(fields);
       } else if (i < guessed.completelyGuessed + guessed.partialyGuessed) {
         el.imagePath = '../assets/asset-images/part_guess.png';
       }
-    });
 
-    this._getResult.next(fields);
+      this.setResult(el.imagePath, currentTry * 4 + i);
+    });
   }
 
   public trySolution() {
@@ -186,7 +184,12 @@ export class GameLogicService implements OnDestroy{
   }
 
   finishGame(message: string) {
-    this._isClickable.next({ clickable: false });
+    const gameId = JSON.parse(localStorage.getItem('gameId'));
+    const sub = this.gameServerService.getSolution(gameId)
+      .subscribe((res) => {
+        this.setSolution(res);
+      });
+
     this.setGameOn(false);
 
     setTimeout(() => alert(message), 500);
@@ -194,12 +197,14 @@ export class GameLogicService implements OnDestroy{
 
   removeGame() {
     // TODO: Remove data from server too
-    /*const currentTry = JSON.parse(localStorage.getItem('currentTry'));
-    console.log(currentTry);
-    const fields = Array.from(Array(currentTry * 4 + 4), (el, i) => (currentTry - 1) * 4 + i );
+    const currentTry = JSON.parse(localStorage.getItem('currentTry'));
+    const fields = Array.from(Array(currentTry * 4 + 4), (el, i) => i );
     fields.forEach((el) => {
-      this._playerChanged.next({_id: '_id', imagePath: this.logoUrl , el});
-    });*/
+      this._playerChanged.next({imagePath: this.logoUrl , index: el});
+      this.setResult(this.logoUrl, el);
+    });
+
+    this.setSolution(Array(4).fill({imagePath: this.logoUrl}));
   }
 
   ngOnDestroy(): void {

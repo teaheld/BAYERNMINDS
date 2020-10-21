@@ -25,7 +25,6 @@ export class PlayerFieldComponent extends GameFieldComponent implements OnInit, 
   }
 
   ngOnInit(): void {
-    console.log('Ej bre');
   }
 
   onClick() {

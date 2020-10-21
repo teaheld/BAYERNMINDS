@@ -1,6 +1,4 @@
 import { GameLogicService } from './game-logic.service';
-import { GameServerService } from './../game-server.service';
-import { GameService } from './../game.service';
 import { Subscription } from 'rxjs';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 
@@ -13,9 +11,7 @@ export class GameLogicComponent implements OnInit, OnDestroy {
   public buttonVisibility: 'visible' | 'hidden' = 'hidden';
   private activeSubs: Subscription[] = [];
 
-  constructor(private gameService: GameService,
-              private gamesServerService: GameServerService,
-              private gameLogicService: GameLogicService) {
+  constructor(private gameLogicService: GameLogicService) {
     const sub = this.gameLogicService.gameOn
       .subscribe((res: boolean) => {
         if (res) {

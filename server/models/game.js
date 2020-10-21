@@ -45,6 +45,13 @@ gameSchema.statics.getTries = async function(gameId) {
     return tries;
 }
 
+gameSchema.statics.getSolution = async function(gameId) {
+    const solution = (await this.findById(gameId, 'tries -_id').populate('tries.fields').exec()).tries.find(tri => tri.tryIndex === 6).fields;
+
+    return solution;
+}
+
+
 gameSchema.statics.countGuessed = async function(gameId, currentSolution) {
     const game = await this.findById(gameId).exec();
 

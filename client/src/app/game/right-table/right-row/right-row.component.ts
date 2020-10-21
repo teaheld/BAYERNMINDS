@@ -10,16 +10,11 @@ import { Player } from '../../player.model';
 })
 export class RightRowComponent implements OnInit {
   @Input() id: number;
-  public changeSubjects: Subject<Player>[] = [
-    new Subject<Player>(),
-    new Subject<Player>(),
-    new Subject<Player>(),
-    new Subject<Player>() ];
 
   constructor(private gameLogicService: GameLogicService) { }
 
   ngOnInit(): void {
-    const sub = this.gameLogicService.getResult
+    /*const sub = this.gameLogicService.getResult
       .subscribe((res: any) => {
         const currentTry = JSON.parse(localStorage.getItem('currentTry'));
 
@@ -28,7 +23,7 @@ export class RightRowComponent implements OnInit {
             this.changeSubjects[i].next(imagePath);
           });
         }
-      });
+      });*/
   }
 
 }

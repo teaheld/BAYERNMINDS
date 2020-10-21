@@ -25,4 +25,8 @@ export class GameServerService {
   public trySolution(gameId: string, body) {
     return this.http.post(this.url + `games/${gameId}/tries`, body);
   }
+
+  public getSolution(gameId: string) {
+    return this.http.get(this.url + `games/${gameId}/solution`);
+  }
 }

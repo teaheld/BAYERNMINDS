@@ -1,6 +1,6 @@
 <div class="row" style="display: flex; flex-direction: row;">
-    <app-guessed-field [event]="changeSubjects[0].asObservable()" [index]="0"></app-guessed-field>
-    <app-guessed-field [event]="changeSubjects[1].asObservable()" [index]="1"></app-guessed-field>
-    <app-guessed-field [event]="changeSubjects[2].asObservable()" [index]="2"></app-guessed-field>
-    <app-guessed-field [event]="changeSubjects[3].asObservable()" [index]="3"></app-guessed-field>
+    <app-guessed-field [index]="id * 4 + 0"></app-guessed-field>
+    <app-guessed-field [index]="id * 4 + 1"></app-guessed-field>
+    <app-guessed-field [index]="id * 4 + 2"></app-guessed-field>
+    <app-guessed-field [index]="id * 4 + 3"></app-guessed-field>
 </div>
