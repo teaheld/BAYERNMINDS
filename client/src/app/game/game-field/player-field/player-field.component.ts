@@ -1,6 +1,6 @@
+import { Subscription } from 'rxjs';
 import { GameLogicService } from './../../game-logic/game-logic.service';
-import { GameService } from './../../game.service';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { GameFieldComponent } from '../game-field.component';
 
 @Component({
@@ -8,16 +8,24 @@ import { GameFieldComponent } from '../game-field.component';
   templateUrl: '../game-field.component.html',
   styleUrls: ['../game-field.component.css']
 })
-export class PlayerFieldComponent extends GameFieldComponent implements OnInit {
+export class PlayerFieldComponent extends GameFieldComponent implements OnInit, OnDestroy {
   // tslint:disable: variable-name
   @Input() private _id: string;
+  private isClickable = false;
+  private activeSubs: Subscription[] = [];
 
-  constructor(private gameService: GameService,
-              protected gameLogicService: GameLogicService) {
+  constructor(protected gameLogicService: GameLogicService) {
     super(gameLogicService);
+    const sub = this.gameLogicService.gameOn
+      .subscribe((res: boolean) => {
+        this.isClickable = res;
+      });
+
+    this.activeSubs.push(sub);
   }
 
   ngOnInit(): void {
+    console.log('Ej bre');
   }
 
   onClick() {
@@ -26,4 +34,9 @@ export class PlayerFieldComponent extends GameFieldComponent implements OnInit {
     }
   }
 
+  ngOnDestroy(): void {
+    this.activeSubs.forEach((sub: Subscription) => {
+      sub.unsubscribe();
+    });
+  }
 }

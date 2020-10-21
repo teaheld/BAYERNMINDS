@@ -16,7 +16,7 @@ export class GameLogicComponent implements OnInit, OnDestroy {
   constructor(private gameService: GameService,
               private gamesServerService: GameServerService,
               private gameLogicService: GameLogicService) {
-    const sub = this.gameLogicService.isClickable
+    const sub = this.gameLogicService.gameOn
       .subscribe((res: boolean) => {
         if (res) {
           this.buttonVisibility = 'visible';
