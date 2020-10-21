@@ -1,3 +1,5 @@
+import { GameLogicService } from './game-logic.service';
+import { GameServerService } from './../game-server.service';
 import { GameService } from './../game.service';
 import { Subscription } from 'rxjs';
 import { Component, OnDestroy, OnInit } from '@angular/core';
@@ -11,37 +13,34 @@ export class GameLogicComponent implements OnInit, OnDestroy {
   public buttonVisibility: 'visible' | 'hidden' = 'hidden';
   private activeSubs: Subscription[] = [];
 
-  constructor(private gameService: GameService) {
+  constructor(private gameService: GameService,
+              private gamesServerService: GameServerService,
+              private gameLogicService: GameLogicService) {
+    const sub = this.gameLogicService.isClickable
+      .subscribe((res: boolean) => {
+        if (res) {
+          this.buttonVisibility = 'visible';
+        } else {
+          this.buttonVisibility = 'hidden';
+        }
+      });
+
+    this.activeSubs.push(sub);
   }
 
   ngOnInit(): void {
   }
 
   newGame() {
-    const sub = this.gameService.newGame()
-      .subscribe((res: boolean) => {
-        if (res) {
-          this.buttonVisibility = 'visible';
-        }
-        /*this.gameService.showSolution(res.tries[0].fields);
-        localStorage.setItem('gameId', JSON.stringify(res._id));
-        localStorage.setItem('currentTry', JSON.stringify(0));
-
-        this.buttonVisibility = 'visible';*/
-      });
-
-    this.activeSubs.push(sub);
+    this.gameLogicService.newGame();
   }
 
   trySolution() {
-    const sub = this.gameService.trySolution()
-      .subscribe((res) => {
-        console.log(res);
-      });
+    this.gameLogicService.trySolution();
   }
 
   removePlayer() {
-    this.gameService.removeLastPlayerFromTable();
+    this.gameLogicService.removeLastPlayerFromTable();
   }
 
   ngOnDestroy(): void {

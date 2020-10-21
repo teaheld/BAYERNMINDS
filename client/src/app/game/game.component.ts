@@ -1,3 +1,4 @@
+import { GameServerService } from './game-server.service';
 import { Player } from './player.model';
 import { GameService } from './game.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
@@ -12,11 +13,9 @@ export class GameComponent implements OnInit, OnDestroy {
   public players: Player[] = [];
   private activeSubs: Subscription[] = [];
 
-  constructor(private gameService: GameService) {
-    const sub = this.gameService.getPlayers()
+  constructor(private gameServerService: GameServerService) {
+    const sub = this.gameServerService.getPlayers()
       .subscribe((res: Player[]) => {
-        console.log(res);
-
         this.players = res;
       });
 

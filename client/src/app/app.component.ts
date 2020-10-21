@@ -1,3 +1,4 @@
+import { GameService } from './game/game.service';
 import { Component } from '@angular/core';
 
 @Component({
@@ -7,4 +8,11 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'BAYERNMINDS';
+
+  /*constructor(private gameService: GameService) {
+    const sub = this.gameService.setUpGame()
+      .subscribe((res) => {
+        console.log(res);
+      });
+  }*/
 }

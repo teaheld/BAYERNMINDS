@@ -1,3 +1,4 @@
+import { GameLogicService } from './../../game-logic/game-logic.service';
 import { Player } from './../../player.model';
 import { GameService } from './../../game.service';
 import { Subject, Subscription } from 'rxjs';
@@ -18,10 +19,11 @@ export class LeftRowComponent implements OnInit, OnDestroy {
   private activeSubs: Subscription[] = [];
 
 
-  constructor(private gameService: GameService) { }
+  constructor(private gameService: GameService,
+              private gameLogicService: GameLogicService) { }
 
   ngOnInit(): void {
-    const sub = this.gameService.newPlayerOnTable
+    const sub = this.gameLogicService.playerChanged
       .subscribe((res: {_id: string, imagePath: string, freeFieldIndex: number}) => {
         const currentTry = JSON.parse(localStorage.getItem('currentTry'));
         if (currentTry === this.id) {

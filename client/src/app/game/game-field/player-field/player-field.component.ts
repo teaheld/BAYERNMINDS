@@ -1,3 +1,4 @@
+import { GameLogicService } from './../../game-logic/game-logic.service';
 import { GameService } from './../../game.service';
 import { Component, Input, OnInit } from '@angular/core';
 import { GameFieldComponent } from '../game-field.component';
@@ -11,16 +12,18 @@ export class PlayerFieldComponent extends GameFieldComponent implements OnInit {
   // tslint:disable: variable-name
   @Input() private _id: string;
 
-  constructor(private gameService: GameService) {
-    super();
+  constructor(private gameService: GameService,
+              protected gameLogicService: GameLogicService) {
+    super(gameLogicService);
   }
 
   ngOnInit(): void {
   }
 
   onClick() {
-    console.log(this._id);
-    this.gameService.addPlayerToTable(this._id, this.imagePath);
+    if (this.isClickable) {
+      this.gameLogicService.addPlayerToTable(this._id, this.imagePath);
+    }
   }
 
 }

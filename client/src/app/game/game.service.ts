@@ -93,13 +93,13 @@ export class GameService implements OnDestroy {
   }
 
   public setUpGame(game?) {
+    const gameId = JSON.parse(localStorage.getItem('gameId'));
+
     // Created new game
     if (game) {
       // Just for now to check if game is correct
       this.showSolution(game.tries[0].fields);
 
-      // If we have something left in the localStorage
-      const gameId = JSON.parse(localStorage.getItem('gameId'));
       if (gameId) {
         this.removeGame(gameId);
       }
@@ -109,9 +109,9 @@ export class GameService implements OnDestroy {
       localStorage.setItem('currentTry', JSON.stringify(game.currentTry));
       localStorage.setItem('currentSolution', JSON.stringify(currentSolution));
     // First time creating a game component
-    } else {
+    } else if (gameId) {
       // Maybe we have a game left
-
+      return this.getTries(gameId);
     }
   }
 

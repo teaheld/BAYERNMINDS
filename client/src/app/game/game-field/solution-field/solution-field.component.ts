@@ -1,3 +1,4 @@
+import { GameLogicService } from './../../game-logic/game-logic.service';
 import { GameFieldComponent } from './../game-field.component';
 import { Component, OnInit } from '@angular/core';
 
@@ -8,8 +9,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SolutionFieldComponent extends GameFieldComponent implements OnInit {
 
-  constructor() {
-    super();
+  constructor(protected gameLogicService: GameLogicService) {
+    super(gameLogicService);
   }
 
   ngOnInit(): void {

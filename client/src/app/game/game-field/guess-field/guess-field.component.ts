@@ -1,9 +1,9 @@
+import { GameLogicService } from './../../game-logic/game-logic.service';
 import { GameService } from './../../game.service';
 import { GameFieldComponent } from './../game-field.component';
 import { Component, Input, OnInit } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { Player } from '../../player.model';
-
 @Component({
   selector: 'app-guess-field',
   templateUrl: '../game-field.component.html',
@@ -14,9 +14,10 @@ export class GuessFieldComponent extends GameFieldComponent implements OnInit{
   @Input() index: number;
   private eventSub: Subscription;
 
-  constructor(private gameService: GameService) {
-    super();
-   }
+  constructor(private gameService: GameService,
+              protected gameLogicService: GameLogicService) {
+    super(gameLogicService);
+  }
 
    ngOnInit(): void {
      this.eventSub = this.event
@@ -26,9 +27,12 @@ export class GuessFieldComponent extends GameFieldComponent implements OnInit{
    }
 
   onClick() {
-    this.gameService.removePlayerFromTable(this.index);
+    if (this.isClickable) {
+      this.gameLogicService.removePlayerFromTable(this.index);
+      console.log('Evo');
 
-    this.imagePath = this.logoUrl;
+      this.imagePath = this.logoUrl;
+    }
   }
 
 }
