@@ -17,6 +17,7 @@ import { LeftRowComponent } from './game/left-table/left-row/left-row.component'
 import { RightRowComponent } from './game/right-table/right-row/right-row.component';
 import { SolutionFieldComponent } from './game/game-field/solution-field/solution-field.component';
 import { GameLogicComponent } from './game/game-logic/game-logic.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -39,7 +40,8 @@ import { GameLogicComponent } from './game/game-logic/game-logic.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

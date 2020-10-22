@@ -1,3 +1,5 @@
+import { GameLogicService } from './game-logic/game-logic.service';
+import { GameLogicComponent } from './game-logic/game-logic.component';
 import { GameServerService } from './game-server.service';
 import { Player } from './player.model';
 import { Component, OnDestroy, OnInit } from '@angular/core';
@@ -12,13 +14,19 @@ export class GameComponent implements OnInit, OnDestroy {
   public players: Player[] = [];
   private activeSubs: Subscription[] = [];
 
-  constructor(private gameServerService: GameServerService) {
+  constructor(private gameServerService: GameServerService,
+              private gameLogicService: GameLogicService) {
     const sub = this.gameServerService.getPlayers()
       .subscribe((res: Player[]) => {
         this.players = res;
       });
 
     this.activeSubs.push(sub);
+
+    const gameId = JSON.parse(localStorage.getItem('gameId'));
+    if (gameId) {
+      const sub1 = this.gameLogicService.getTries(gameId);
+    }
   }
 
   ngOnInit(): void {

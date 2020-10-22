@@ -1,6 +1,46 @@
 .sol {
     display: flex;
     flex-direction: row;
-    margin-left: 10px;
-    margin-top: 15px;
+    margin-left: 20px;
+    margin-top: 5px;
+}
+
+.help {
+    color: white;
+    font-size: 15px;
+    margin-left: 20px;
+    margin-right: 10px;
+    width: 300px;
+}
+
+h3 {
+    text-align: center;
+}
+
+button {
+    background-color: #a01439;
+    width: 63px;
+    height: 40px;
+    border-radius: 5px;
+    border: none;
+    color: white;
+    margin-bottom: 10px;
+}
+
+input {
+    height: 40px;
+    border-radius: 5px;
+    border: none;
+    margin-right: 10px;
+    width: 210px;
+    padding-left: 10px;
+}
+
+h4 {
+    font-weight: 500;
+}
+
+::placeholder {
+    color: #a01439;
+    font-weight: bold;
 }

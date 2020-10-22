@@ -64,11 +64,16 @@ gameSchema.statics.countGuessed = async function(gameId, currentSolution) {
     const guessed = countInSolution.map((sol, i) => { return Math.min(sol, countInCurrentSolution[i]) })
         .reduce((sum, el) => { return sum + el; });
 
+    if (game.currentTry < 5) {
+        game.currentTry++;
+        await game.save();
+    }
+
     return { completelyGuessed, partialyGuessed: guessed - completelyGuessed };
 }
 
 gameSchema.methods.countInSolution = async function(index) {
-    index = index | this.currentTry;
+    index = index || this.currentTry;
     const players = await Field.getPlayers();
     const solution = this.tries.find(tri => tri.tryIndex === index).fields;
 
@@ -88,6 +93,8 @@ gameSchema.methods.countCompletelyGuessed = async function() {
 
 gameSchema.methods.addTry = async function(currentSolution) {
     this.tries.push({ tryIndex: this.currentTry, fields: currentSolution });
+
+    await this.save();
 }
 
 const Game = mongoose.model('Game', gameSchema);

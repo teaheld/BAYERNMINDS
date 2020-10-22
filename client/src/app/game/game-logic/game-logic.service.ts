@@ -190,6 +190,8 @@ export class GameLogicService implements OnDestroy{
         this.setSolution(res);
       });
 
+    this.activeSubs.push(sub);
+
     this.setGameOn(false);
 
     setTimeout(() => alert(message), 500);
@@ -205,6 +207,15 @@ export class GameLogicService implements OnDestroy{
     });
 
     this.setSolution(Array(4).fill({imagePath: this.logoUrl}));
+  }
+
+  getTries(gameId: string) {
+    const sub = this.gameServerService.getTries(gameId)
+    .subscribe((res) => {
+      console.log(res);
+    });
+
+    this.activeSubs.push(sub);
   }
 
   ngOnDestroy(): void {
