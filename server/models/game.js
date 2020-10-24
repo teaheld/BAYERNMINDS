@@ -18,7 +18,15 @@ const gameSchema = mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: Field,
             default: []
-        }]
+        }],
+        completelyGuessed: {
+            type: Number,
+            enum: [0, 1, 2, 3, 4]
+        },
+        partialyGuessed: {
+            type: Number,
+            enum: [0, 1, 2, 3, 4]
+        }
     }]
 });
 
@@ -40,7 +48,7 @@ gameSchema.statics.newGame = async function() {
 }
 
 gameSchema.statics.getTries = async function(gameId) {
-    const tries = await this.findById(gameId, 'tries -_id').exec();
+    const tries = await this.findById(gameId, 'tries -_id').populate('tries.fields').exec();
 
     return tries;
 }
@@ -64,10 +72,15 @@ gameSchema.statics.countGuessed = async function(gameId, currentSolution) {
     const guessed = countInSolution.map((sol, i) => { return Math.min(sol, countInCurrentSolution[i]) })
         .reduce((sum, el) => { return sum + el; });
 
+    const index = game.tries.findIndex((el) => el.tryIndex === game.currentTry);
+    game.tries[index].completelyGuessed = completelyGuessed;
+    game.tries[index].partialyGuessed = guessed - completelyGuessed;
+
     if (game.currentTry < 5) {
         game.currentTry++;
-        await game.save();
     }
+
+    await game.save();
 
     return { completelyGuessed, partialyGuessed: guessed - completelyGuessed };
 }

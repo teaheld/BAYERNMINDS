@@ -16,7 +16,7 @@ export class GameComponent implements OnInit, OnDestroy {
 
   constructor(private gameServerService: GameServerService,
               private gameLogicService: GameLogicService) {
-    const sub = this.gameServerService.getPlayers()
+    const sub = this.gameLogicService.getPlayers()
       .subscribe((res: Player[]) => {
         this.players = res;
       });
@@ -25,7 +25,7 @@ export class GameComponent implements OnInit, OnDestroy {
 
     const gameId = JSON.parse(localStorage.getItem('gameId'));
     if (gameId) {
-      const sub1 = this.gameLogicService.getTries(gameId);
+      this.gameLogicService.getTries(gameId);
     }
   }
 

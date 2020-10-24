@@ -2,6 +2,8 @@ import { Game } from './../game.model';
 import { Subject, Subscription } from 'rxjs';
 import { GameServerService } from './../game-server.service';
 import { Injectable, OnDestroy } from '@angular/core';
+import { Player } from '../player.model';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -14,9 +16,18 @@ export class GameLogicService implements OnDestroy{
   private _getSolution = new Subject<{}>();
   private _playerChanged = new Subject<{imagePath: string, index: number}>();
   private _getResult = new Subject<{imagePath: string, index: number}>();
+  private players: Player[];
   private activeSubs: Subscription[] = [];
 
   constructor(private gameServerService: GameServerService) { }
+
+  public getPlayers() {
+    return this.gameServerService.getPlayers()
+      .pipe(tap((res: Player[]) => {
+        this.players = res;
+        console.log(this.players);
+      }));
+  }
 
   public get isClickable() {
     return this._isClickable.asObservable();
@@ -126,8 +137,7 @@ export class GameLogicService implements OnDestroy{
     }
   }
 
-  public setGuessed(guessed) {
-    const currentTry = JSON.parse(localStorage.getItem('currentTry'));
+  public setGuessed(guessed, currentTry) {
     const fields = [{imagePath: ''}, {imagePath: ''}, {imagePath: ''}, {imagePath: ''}];
 
     fields.forEach((el, i) => {
@@ -154,7 +164,9 @@ export class GameLogicService implements OnDestroy{
 
       const sub = this.gameServerService.trySolution(gameId, body)
         .subscribe((res: {completelyGuessed: number, partialyGuessed: number}) => {
-          this.setGuessed(res);
+          const currentTry = JSON.parse(localStorage.getItem('currentTry'));
+
+          this.setGuessed(res, currentTry);
           this.initializeNextTry(res);
         });
 
@@ -211,8 +223,35 @@ export class GameLogicService implements OnDestroy{
 
   getTries(gameId: string) {
     const sub = this.gameServerService.getTries(gameId)
-    .subscribe((res) => {
-      console.log(res);
+    .subscribe((res: {tries: {tryIndex: number, fields: Player[], completelyGuessed: number, partialyGuessed: number}[]}) => {
+      const tries = res.tries;
+      const currentTry = JSON.parse(localStorage.getItem('currentTry'));
+      this.setGameOn(true);
+      this.setClickable(true);
+      const fl = Array.from(Array(currentTry * 4), (el, i) => i );
+      fl.forEach((el) => {
+        this.setClickable(false, el);
+      });
+
+      tries.forEach((el) => {
+        if (el.tryIndex !== 6) {
+          el.fields.forEach((field, i) => {
+            this._playerChanged.next({imagePath: field.imagePath, index: el.tryIndex * 4 + i});
+          });
+
+          this.setGuessed({completelyGuessed: el.completelyGuessed, partialyGuessed: el.partialyGuessed}, el.tryIndex);
+        }
+      });
+
+      if (tries.length - 1 === currentTry) {
+        const currentSolution = JSON.parse(localStorage.getItem('currentSolution'));
+
+        currentSolution.forEach((el, i) => {
+          if (el !== '_id') {
+            this.setPlayerChanged(this.players.find(elem => elem._id === el).imagePath, currentTry * 4 + i);
+          }
+        });
+      }
     });
 
     this.activeSubs.push(sub);
