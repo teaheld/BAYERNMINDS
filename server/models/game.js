@@ -54,7 +54,7 @@ gameSchema.statics.getTries = async function(gameId) {
 }
 
 gameSchema.statics.getSolution = async function(gameId) {
-    const solution = (await this.findById(gameId, 'tries -_id').populate('tries.fields').exec()).tries.find(tri => tri.tryIndex === 6).fields;
+    const solution = await this.findById(gameId, 'tries -_id').populate('tries.fields').exec();
 
     return solution;
 }
@@ -108,6 +108,10 @@ gameSchema.methods.addTry = async function(currentSolution) {
     this.tries.push({ tryIndex: this.currentTry, fields: currentSolution });
 
     await this.save();
+}
+
+gameSchema.statics.removeGame = async function(gameId) {
+    await this.deleteOne({ _id: gameId }).exec();
 }
 
 const Game = mongoose.model('Game', gameSchema);

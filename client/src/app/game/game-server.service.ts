@@ -29,4 +29,12 @@ export class GameServerService {
   public getSolution(gameId: string) {
     return this.http.get(this.url + `games/${gameId}/solution`);
   }
+
+  public removeGame(gameId: string) {
+    return this.http.delete(this.url + `games/${gameId}`);
+  }
+
+  public addScore(body) {
+    return this.http.post(this.url + 'scores', body);
+  }
 }

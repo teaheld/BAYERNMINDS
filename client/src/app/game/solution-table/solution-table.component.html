@@ -1,11 +1,11 @@
 <div class="help">
     <h3> How to play </h3>
     <h4> To start a new game, click on the <b> New game </b> button. <br> Click on the player to add him to the field. <br> Click on the <b> Remove </b> button to remove last added player. <br> Click on the <b> Try </b> button to check your combination. <br>        Number of Lewandowskis on the right is number of guessed places, and number of Muellers of guessed players which are not on the right field. </h4>
+    <span *ngIf="score" style="font-size: 14px;"> Your score is {{ score }}</span>
 
-
-    <form [formGroup]="form" *ngIf="fields && fields.length > 0 && fields[0].imagePath !== logoUrl">
+    <form [formGroup]="form" *ngIf="score && score > 0">
         <input formControlName="name" type="text" id="name" placeholder="Bastian Schweinsteiger">
-        <button type="submit" id="postButton" onclick="post_score()"><b>POST</b></button>
+        <button type="submit" id="postButton" (click)="postScore()"><b>POST</b></button>
     </form>
     <div class="sol">
         <app-solution-field *ngFor="let field of fields" [_imagePath]="field.imagePath"></app-solution-field>

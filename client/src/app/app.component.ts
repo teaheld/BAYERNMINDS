@@ -7,11 +7,4 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'BAYERNMINDS';
-
-  /*constructor(private gameService: GameService) {
-    const sub = this.gameService.setUpGame()
-      .subscribe((res) => {
-        console.log(res);
-      });
-  }*/
 }

@@ -16,7 +16,7 @@ export class GameComponent implements OnInit, OnDestroy {
 
   constructor(private gameServerService: GameServerService,
               private gameLogicService: GameLogicService) {
-    const sub = this.gameLogicService.getPlayers()
+    const sub = this.gameServerService.getPlayers()
       .subscribe((res: Player[]) => {
         this.players = res;
       });

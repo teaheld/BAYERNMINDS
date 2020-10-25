@@ -39,9 +39,33 @@ module.exports.getSolution = async(req, res, next) => {
     const gameId = req.params.gameId;
 
     try {
-        const solution = await Game.getSolution(gameId);
+        const tries = await Game.getTries(gameId);
 
-        res.json(solution);
+        const solution = tries.tries.find(tri => tri.tryIndex === 6).fields;
+
+        let score = tries.tries.find(el => el.completelyGuessed === 4);
+        if (score) {
+            console.log(score);
+            score = 6000 - score.tryIndex * 1000;
+
+        } else {
+            score = 0;
+            //score = 6000 - score.tryIndex * 1000;
+        }
+
+        res.json({ solution, score });
+    } catch (err) {
+        next(err);
+    }
+}
+
+module.exports.removeGame = async(req, res, next) => {
+    const gameId = req.params.gameId;
+
+    try {
+        await Game.removeGame(gameId);
+
+        res.json({ msg: 'Ok' });
     } catch (err) {
         next(err);
     }

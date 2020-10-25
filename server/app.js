@@ -34,5 +34,7 @@ const playersRoutes = require('./routes/players');
 app.use('/players', playersRoutes);
 const gamesRoutes = require('./routes/games');
 app.use('/games', gamesRoutes);
+const scoresRoutes = require('./routes/scores');
+app.use('/scores', scoresRoutes);
 
 module.exports = app;

@@ -19,14 +19,15 @@ export class GameLogicService implements OnDestroy{
   private players: Player[];
   private activeSubs: Subscription[] = [];
 
-  constructor(private gameServerService: GameServerService) { }
+  constructor(private gameServerService: GameServerService) {
+    const sub = this.getPlayers()
+      .subscribe((res: Player[]) => {
+        this.players = res;
+      });
+  }
 
   public getPlayers() {
-    return this.gameServerService.getPlayers()
-      .pipe(tap((res: Player[]) => {
-        this.players = res;
-        console.log(this.players);
-      }));
+    return this.gameServerService.getPlayers();
   }
 
   public get isClickable() {
@@ -211,6 +212,12 @@ export class GameLogicService implements OnDestroy{
 
   removeGame() {
     // TODO: Remove data from server too
+    const gameId = JSON.parse(localStorage.getItem('gameId'));
+    const sub = this.gameServerService.removeGame(gameId)
+      .subscribe((res) => {
+        console.log(res);
+      });
+
     const currentTry = JSON.parse(localStorage.getItem('currentTry'));
     const fields = Array.from(Array(currentTry * 4 + 4), (el, i) => i );
     fields.forEach((el) => {
@@ -218,7 +225,7 @@ export class GameLogicService implements OnDestroy{
       this.setResult(this.logoUrl, el);
     });
 
-    this.setSolution(Array(4).fill({imagePath: this.logoUrl}));
+    this.setSolution({solution: Array(4).fill({imagePath: this.logoUrl})});
   }
 
   getTries(gameId: string) {
@@ -240,14 +247,22 @@ export class GameLogicService implements OnDestroy{
           });
 
           this.setGuessed({completelyGuessed: el.completelyGuessed, partialyGuessed: el.partialyGuessed}, el.tryIndex);
+
+          if (el.completelyGuessed === 4) {
+            this.finishGame('Congratulations! You won!!!');
+          } else if (el.tryIndex === 5) {
+            this.finishGame('Try again!!!');
+          }
         }
       });
 
       if (tries.length - 1 === currentTry) {
         const currentSolution = JSON.parse(localStorage.getItem('currentSolution'));
 
+        let j = 0;
         currentSolution.forEach((el, i) => {
           if (el !== '_id') {
+            j++;
             this.setPlayerChanged(this.players.find(elem => elem._id === el).imagePath, currentTry * 4 + i);
           }
         });
