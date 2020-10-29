@@ -1,19 +1,22 @@
 # **BAYERNMINDS**
 
-BAYERNMINDS is a simple Mastermind game, with Bayern players used as pegs, coded in javascript.
+BAYERNMINDS is a simple Mastermind game, with Bayern players used as pegs.
+There are two versions of this game, one written in vanilla javascript, and the other is a MEAN app. 
+Choose your version and enjoy!
 
-The results are then sent to the server using node.js and express, and saved to mongoDB database.
+# Vanilla javascript
 
-## Installation
-
+## Usage
+In order to play this version, change your directory to javascript project:
+```bash
+cd javascript-project
+```
+Then install necessary packages:
 ```bash
 npm install
 ```
 
-## Usage
-
-First install necessary packages:
-
+Then start the server:
 ```
 npm start
 ```
@@ -21,3 +24,28 @@ npm start
 Open index.html page inside game/sources to play.
 
 [Check my react leaderboard app for this game](https://github.com/teaheld/bayernminds_best-react-app) 
+
+# MEAN app
+
+## Usage
+Change directory to MEAN-app
+```bash
+cd MEAN-app
+```
+
+Open two terminals. One for server and one for client.
+Install necessary packages for server and start server:
+```bash
+cd server
+npm install
+
+npm start
+```
+
+Install necessary packages for client and run client:
+```bash
+cd client
+ng serve
+```
+Finally, open your browser and type ```http://localhost:4200/```.
+Enjoy!
