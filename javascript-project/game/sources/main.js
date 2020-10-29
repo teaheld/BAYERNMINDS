@@ -101,7 +101,7 @@ function try_solution() {
 }
 
 function postJSON(data) {
-    fetch('http://localhost:3001/users', {
+    fetch('http://localhost:3001/scores', {
             method: 'POST', // or 'PUT'
             headers: {
                 'Content-Type': 'application/json',
