@@ -19,9 +19,14 @@ mongoose.connect(`mongodb://localhost:27017/bayernminds`, {
 const port = 3001;
 const app = express();
 
+const path = require('path');
+const gamePath = path.join(__dirname, '../game/sources');
+const imagesPath = path.join(__dirname, '../game');
+app.use('/', express.static(gamePath, { extensions: ['html'] }));
+app.use('/', express.static(imagesPath));
+
+
 app.use(express.json({ extended: false }));
-/*
-app.use(bodyParser.urlencoded({ extended: true }));*/
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -34,7 +39,7 @@ app.use((req, res, next) => {
 const Score = require('./score.model');
 
 app.get('/scores', (req, res) => {
-    Score.find({}, (err, scores) => {
+    Score.find({}).sort('-score').limit(10).exec((err, scores) => {
         if (err) {
             console.error(err);
         }

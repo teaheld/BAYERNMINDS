@@ -20,8 +20,7 @@ Then start the server:
 ```
 npm start
 ```
-
-Open index.html page inside game/sources to play.
+Finally, open your browser and type ```http://localhost:3001/game```.
 
 [Check my react leaderboard app for this game](https://github.com/teaheld/bayernminds_best-react-app) 
 

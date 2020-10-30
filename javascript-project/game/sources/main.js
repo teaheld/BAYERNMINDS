@@ -89,9 +89,9 @@ function try_solution() {
         game.set_solution();
 
         if (true === guessed) {
-            alert("Congratulations! You won!!! Your score is " + game.score + "!");
+            setTimeout(() => alert("Congratulations! You won!!! Your score is " + game.score + "!"), 500);
         } else {
-            alert("Try again! Your score is 0 :(");
+            setTimeout(() => alert("Try again! Your score is 0 :("), 500);
         }
 
         return;
